@@ -1,17 +1,13 @@
 
 import './App.css'
-import { Button } from './components/ui/button'
+import { DashboardContent } from './components/sidebar/DashboardContent'
 
 function App() {
 
   return (
-    <>
       <div>
-        <Button>
-            Hello 
-        </Button>
+        <DashboardContent />
       </div>
-    </>
   )
 }
 
