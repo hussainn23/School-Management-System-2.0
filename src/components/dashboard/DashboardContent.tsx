@@ -1,11 +1,6 @@
-import {
-    ArrowRight,
-    Calculator,
-    Flag,
-    Users2,
-} from 'lucide-react';
+import { ArrowRight, Calculator, Flag, ListChecks, Users2 } from 'lucide-react';
 
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import { Card, CardContent, CardHeader } from '../ui/card';
 import { Progress } from '../ui/progress';
 
 const grades = [
@@ -22,28 +17,28 @@ const grades = [
 
 export const DashboardContent = () => {
     return (
-        <div className="p-6">
-            <h2 className="text-gray-600 font-semibold text-2xl mb-3">
+        <div className="p-4 sm:p-6">
+            <h2 className="font-semibold text-xl sm:text-2xl mb-3">
                 Dashboard
             </h2>
-            <div className="grid gap-6 md:grid-cols-12">
-                <div className="space-y-6 md:col-span-8">
+            <div className="grid gap-6 grid-cols-12">
+                <div className="space-y-6 lg:col-span-8 col-span-12">
                     <div className="grid gap-6 md:grid-cols-1">
-                        <Card className="shadow-md rounded-lg">
-                            <CardContent className="flex flex-col gap-5 p-6">
+                        <Card className="shadow-md rounded-3xl">
+                            <CardContent className="flex flex-col gap-5 px-4 sm:px-6 py-6 sm:py-8">
                                 <div className="flex items-center gap-4">
-                                    <div className="rounded-lg bg-orange-50 p-7">
-                                        <Users2 className="h-10 w-10 text-orange-400" />
+                                    <div className="rounded-lg bg-orange-50 p-5 sm:p-7">
+                                        <Users2 className="h-8 w-8 sm:h-10 sm:w-10 text-orange-400" />
                                     </div>
                                     <div>
-                                        <p className="text-lg font-semibold text-gray-600">
+                                        <p className="text-md sm:text-lg font-semibold text-gray-600">
                                             Total Students
                                         </p>
-                                        <h3 className="text-4xl font-bold text-gray-600">
+                                        <h3 className="text-3xl sm:text-4xl font-bold text-gray-600">
                                             1,290
                                         </h3>
                                     </div>
-                                    <ArrowRight className="ml-auto h-16 w-16 text-orange-500 opacity-90" />
+                                    <ArrowRight className="ml-auto h-12 w-12 sm:h-16 sm:w-16 text-orange-500 opacity-90" />
                                 </div>
 
                                 <MainCardComponent
@@ -70,22 +65,25 @@ export const DashboardContent = () => {
                     </div>
 
                     {/* Bottom Stats */}
-                    <div className="grid gap-6 md:grid-cols-3">
-                        <Card className="md:col-span-2">
-                            <CardContent className="p-6 shadow-md rounded-lg">
-                                <div className="flex flex-col gap-6">
-                                    <div className="flex items-center gap-4">
-                                        <div className="rounded-lg bg-blue-50 p-5">
-                                            <Calculator className="h-10 w-10 text-blue-500" />
+                    <div className="grid gap-6 md:grid-cols-4">
+                        <Card className="md:col-span-2 p-4 sm:p-6 shadow-md rounded-3xl border-none bg-white">
+                            <CardContent>
+                                <div className="flex flex-col gap-6 sm:gap-10">
+                                    <div className="flex items-center justify-between">
+                                        <div className="flex items-center gap-4">
+                                            <div className="rounded-lg bg-blue-50 p-4 sm:p-5">
+                                                <Calculator className="h-8 w-8 sm:h-10 sm:w-10 text-blue-500" />
+                                            </div>
+                                            <div>
+                                                <p className="text-sm font-semibold text-gray-600">
+                                                    Accounts (Total Fee)
+                                                </p>
+                                                <h3 className="text-xl sm:text-2xl font-normal text-gray-800">
+                                                    Rs. 12930.00/-
+                                                </h3>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <p className="text-sm font-semibold text-muted-foreground">
-                                                Accounts (Total Fee)
-                                            </p>
-                                            <h3 className="text-2xl font-thin">
-                                                Rs. 12930.00/-
-                                            </h3>
-                                        </div>
+                                        <ArrowRight className="ml-auto h-12 w-12 sm:h-16 sm:w-16 text-blue-500 opacity-90" />
                                     </div>
                                     <div className="space-y-4">
                                         <div>
@@ -93,7 +91,9 @@ export const DashboardContent = () => {
                                                 <span className="text-muted-foreground font-semibold">
                                                     Received Amount
                                                 </span>
-                                                <span className='font-semibold text-muted-foreground'>Rs. 124.00</span>
+                                                <span className="font-semibold text-muted-foreground">
+                                                    Rs. 124.00
+                                                </span>
                                             </div>
                                             <Progress
                                                 value={33}
@@ -106,7 +106,9 @@ export const DashboardContent = () => {
                                                 <span className="text-muted-foreground font-semibold">
                                                     Pending Amount
                                                 </span>
-                                                <span className='font-semibold text-muted-foreground'>Rs. 12134.00</span>
+                                                <span className="font-semibold text-muted-foreground">
+                                                    Rs. 12134.00
+                                                </span>
                                             </div>
                                             <Progress
                                                 value={66}
@@ -118,38 +120,68 @@ export const DashboardContent = () => {
                                 </div>
                             </CardContent>
                         </Card>
-
-                        <Card>
-                            <CardContent className="flex items-center gap-4 p-6">
-                                <div className="rounded-lg bg-emerald-50 p-3">
-                                    <Users2 className="h-6 w-6 text-emerald-500" />
-                                </div>
-                                <div>
-                                    <p className="text-sm font-medium text-muted-foreground">
-                                        Total Teachers
-                                    </p>
-                                    <h3 className="text-2xl font-bold">90</h3>
-                                </div>
-                                <ArrowRight className="ml-auto h-5 w-5 text-emerald-500" />
-                            </CardContent>
-                        </Card>
+                        <div className="md:col-span-2 flex flex-col justify-between gap-4">
+                            <Card className="shadow-md rounded-3xl">
+                                <CardContent className="flex items-center gap-4 sm:gap-5 p-4 sm:p-6">
+                                    <div className="rounded-lg bg-emerald-50 p-4 sm:p-5">
+                                        <Users2 className="h-8 w-8 sm:h-10 sm:w-10 text-emerald-500" />
+                                    </div>
+                                    <div>
+                                        <p className="text-md sm:text-lg font-medium text-gray-600">
+                                            Total Teachers
+                                        </p>
+                                        <h3 className="text-3xl sm:text-4xl font-bold text-gray-700">
+                                            90
+                                        </h3>
+                                    </div>
+                                    <ArrowRight className="ml-auto h-12 w-12 sm:h-16 sm:w-16 text-emerald-500" />
+                                </CardContent>
+                            </Card>
+                            <Card className="shadow-md rounded-3xl">
+                                <CardContent className="flex items-center gap-4 sm:gap-5 p-4 sm:p-6">
+                                    <div className="rounded-lg bg-red-100 p-4 sm:p-5">
+                                        <Flag className="h-8 w-8 sm:h-10 sm:w-10 text-red-500" />
+                                    </div>
+                                    <div>
+                                        <p className="text-md sm:text-lg font-medium text-gray-600">
+                                            Upcoming Events
+                                        </p>
+                                        <h3 className="text-3xl sm:text-4xl font-bold text-gray-700">
+                                            30
+                                        </h3>
+                                    </div>
+                                    <ArrowRight className="ml-auto h-12 w-12 sm:h-16 sm:w-16 text-red-500" />
+                                </CardContent>
+                            </Card>
+                        </div>
                     </div>
                 </div>
 
                 {/* Right Section - Grade Performance */}
-                <Card className="md:col-span-4">
-                    <CardHeader>
-                        <CardTitle>Exams Total Percentage</CardTitle>
+                <Card className="lg:col-span-4 col-span-12 rounded-3xl shadow-md">
+                    <CardHeader className="flex flex-row gap-4 sm:gap-5 p-4 sm:p-6">
+                        <div className="rounded-lg bg-green-100 p-4 sm:p-5">
+                            <ListChecks className="h-8 w-8 sm:h-10 sm:w-10 text-green-500" />
+                        </div>
+                        <div>
+                            <p className="text-md sm:text-lg font-semibold text-gray-600">
+                                Exams Total Percentage
+                            </p>
+                            <h3 className="text-3xl sm:text-4xl font-bold text-gray-700">
+                                80%
+                            </h3>
+                        </div>
+                        <ArrowRight className="ml-auto h-12 w-12 sm:h-16 sm:w-16 text-green-500" />
                     </CardHeader>
                     <CardContent>
-                        <div className="space-y-4">
+                        <div className="space-y-6 sm:space-y-8">
                             {grades.map((grade) => (
                                 <div key={grade.name} className="space-y-2">
                                     <div className="flex items-center justify-between text-sm">
-                                        <span className="font-medium">
+                                        <span className="font-semibold text-[14px] sm:text-[16px] text-gray-700">
                                             {grade.name}
                                         </span>
-                                        <span className="text-muted-foreground">
+                                        <span className="text-gray-800 font-semibold">
                                             {grade.value}%
                                         </span>
                                     </div>
@@ -166,8 +198,7 @@ export const DashboardContent = () => {
             </div>
         </div>
     );
-}
-
+};
 
 const MainCardComponent = ({
     title,

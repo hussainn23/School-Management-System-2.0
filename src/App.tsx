@@ -1,13 +1,14 @@
-
 import './App.css'
-import { DashboardContent } from './components/sidebar/DashboardContent'
+import {HomePageRoute} from "../routes/homepage.route"
+import {AdminRoutes} from "../routes/admin.route"
 
 function App() {
 
   return (
-      <div>
-        <DashboardContent />
-      </div>
+        <>
+            <HomePageRoute />
+            <AdminRoutes />
+        </>
   )
 }
 
