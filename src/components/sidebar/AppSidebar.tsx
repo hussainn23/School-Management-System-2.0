@@ -33,7 +33,7 @@ import { Link } from 'react-router-dom';
 const navigation = [
     {
         name: 'Dashboard',
-        href: '/dashboard',
+        href: '/',
         icon: LayoutDashboard,
     },
     {
@@ -41,7 +41,7 @@ const navigation = [
         href: '/admin',
         icon: Users,
         submenu: [
-            { name: 'Class Management', href: '/admin/class' },
+            { name: 'Class Management', href: '/admin/class-management' },
             { name: 'Section Management', href: '/admin/section' },
             { name: 'Teacher Management', href: '/admin/teacher' },
             { name: 'Transport Management', href: '/admin/transport' },
@@ -85,7 +85,12 @@ export function AppSidebar() {
     const location = useLocation();
     const [openMenus, setOpenMenus] = React.useState<string[]>([]);
 
-    const isActive = (href: string) => location.pathname.startsWith(href);
+    const isActive = (href: string) => {
+        if (href === '/') {
+            return location.pathname === '/';
+        }
+        return location.pathname.startsWith(href);
+    };
 
     const isSubmenuActive = (item: any) => {
         if (!item.submenu) return false;
@@ -140,7 +145,7 @@ export function AppSidebar() {
                                     >
                                         <NavLink
                                             to={item.href}
-                                            className='p-2'
+                                            className='p-2 font-medium'
                                         >
                                             <item.icon className="mr-2 h-4 w-4" />
                                             {item.name}
@@ -166,7 +171,7 @@ export function AppSidebar() {
                                                 isSubmenuActive(item)
                                             }
                                         >
-                                            <div className="flex items-center">
+                                            <div className="flex items-center font-medium">
                                                 <item.icon className="mr-2 h-4 w-4" />
                                                 {item.name}
                                             </div>
@@ -194,9 +199,9 @@ export function AppSidebar() {
                                                             subItem.href
                                                         )}
                                                     >
-                                                        <a href={subItem.href}>
+                                                        <Link to={subItem.href} className='text-xs'>
                                                             {subItem.name}
-                                                        </a>
+                                                        </Link>
                                                     </SidebarMenuSubButton>
                                                 </SidebarMenuSubItem>
                                             ))}
