@@ -1,17 +1,14 @@
-
 import './App.css'
-import { Button } from './components/ui/button'
+import {HomePageRoute} from "../routes/homepage.route"
+import {AdminRoutes} from "../routes/admin.route"
 
 function App() {
 
   return (
-    <>
-      <div>
-        <Button>
-            Hello 
-        </Button>
-      </div>
-    </>
+        <>
+            <HomePageRoute />
+            <AdminRoutes />
+        </>
   )
 }
 
