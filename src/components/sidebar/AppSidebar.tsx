@@ -42,7 +42,7 @@ const navigation = [
         icon: Users,
         submenu: [
             { name: 'Class Management', href: '/admin/class-management' },
-            { name: 'Section Management', href: '/admin/section' },
+            { name: 'Section Management', href: '/admin/section-management' },
             { name: 'Teacher Management', href: '/admin/teacher' },
             { name: 'Transport Management', href: '/admin/transport' },
             { name: 'Attendance', href: '/admin/attendance' },
