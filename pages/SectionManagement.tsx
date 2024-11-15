@@ -10,9 +10,9 @@ import { Button } from '../src/components/ui/button';
 import { MoreHorizontal, Plus, Printer } from 'lucide-react';
 import { Modal } from '../src/components/common/Modal';
 import { useState } from 'react';
-import { Input } from '../src/components/ui/input';
+// import { Input } from '../src/components/ui/input';
 import { Textarea } from '../src/components/ui/textarea';
-import { Select } from '@/components/ui/select';
+import { Select } from '../src/components/ui/select';
 
 const SectionManagement = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
