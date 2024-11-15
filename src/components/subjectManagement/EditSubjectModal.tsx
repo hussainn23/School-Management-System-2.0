@@ -16,7 +16,7 @@ const EditSubjectModal: React.FC<EditSubjectModalProps> = ({ isOpen, closeModal,
   return (
     <Modal title="Edit Subject" isOpen={isOpen} closeModal={closeModal} doSomething={doSomething}>
       <form className="flex flex-col gap-4">
-        <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-1">
           <label htmlFor="class" className="text-sm">Class</label>
           <Select>
             <SelectTrigger className="text-muted-foreground">
@@ -30,11 +30,50 @@ const EditSubjectModal: React.FC<EditSubjectModalProps> = ({ isOpen, closeModal,
         </div>
 
         <div className="flex flex-col gap-1">
-          <label htmlFor="subject" className="text-sm">Subject Name</label>
-          <Input name="subject" defaultValue={subjectName} placeholder="Subject Name" />
+          <label htmlFor="section" className="text-sm">Section</label>
+          <Select>
+            <SelectTrigger className="text-muted-foreground">
+              <SelectValue placeholder="Section" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="A">A</SelectItem>
+              <SelectItem value="B">B</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
-        {/* Additional fields for Teacher, Periods, etc. */}
+        <div className="flex flex-col gap-1">
+          <label htmlFor="subject" className="text-sm">Subject Name</label>
+          <Input name="subject" placeholder="Subject Name" />
+        </div>
+
+        <div className="flex flex-col gap-1">
+          <label htmlFor="teacher" className="text-sm">Teacher</label>
+          <Select>
+            <SelectTrigger className="text-muted-foreground">
+              <SelectValue placeholder="Teacher Name" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="A">A</SelectItem>
+              <SelectItem value="B">B</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="flex flex-col gap-1">
+          <label htmlFor="periods" className="text-sm">Number of periods</label>
+          <Input name="periods" placeholder="01" />
+        </div>
+
+        <div className="flex flex-col gap-1 w-full">
+          <label htmlFor="startingTime" className="text-sm">Starting Time</label>
+          <Input className="w-full block" type="date" name="startingTime" placeholder="Select" />
+        </div>
+
+        <div className="flex flex-col gap-1 w-full">
+          <label htmlFor="endingTime" className="text-sm">Ending Time</label>
+          <Input className="w-full block" type="date" name="endingTime" placeholder="Select" />
+        </div>
       </form>
     </Modal>
   );
