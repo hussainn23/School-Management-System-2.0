@@ -1,6 +1,6 @@
 import React from 'react'
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
+import { Input } from "../src/components/ui/input"
+import { Button } from "../src/components/ui/button"
 import {
     Card,
     CardContent,
@@ -8,7 +8,7 @@ import {
     CardFooter,
     CardHeader,
     CardTitle,
-} from "@/components/ui/card"
+} from "../src/components/ui/card"
 import { Mail, KeyRound } from 'lucide-react';
 
 
@@ -49,7 +49,7 @@ function Login() {
 
 
                 <CardFooter>
-                    <Button size={'btnLogin'} variant={'btnLogin'}>Sign in</Button>
+                    <Button className='w-full'>Sign in</Button>
                 </CardFooter>
             </Card>
         </div>

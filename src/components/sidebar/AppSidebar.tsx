@@ -44,6 +44,7 @@ const navigation = [
             { name: 'Class Management', href: '/admin/class-management' },
             { name: 'Section Management', href: '/admin/section' },
             { name: 'Teacher Management', href: '/admin/teacher' },
+            { name: 'Subject Management', href: '/admin/subject-management' },
             { name: 'Transport Management', href: '/admin/transport' },
             { name: 'Attendance', href: '/admin/attendance' },
             { name: 'Student Report', href: '/admin/student-report' },

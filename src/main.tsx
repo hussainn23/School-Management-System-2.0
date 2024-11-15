@@ -7,6 +7,8 @@ import { AppSidebar } from './components/sidebar/AppSidebar.tsx'
 import { Navbar } from './components/navbar/navbar.tsx'
 import { BrowserRouter } from 'react-router-dom'
 
+
+
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
         <BrowserRouter>
@@ -24,3 +26,4 @@ createRoot(document.getElementById('root')!).render(
         </BrowserRouter>
     </StrictMode>
 );
+

@@ -17,7 +17,8 @@ interface ModalProps {
 export const Modal = ({ children, title, isOpen, closeModal,doSomething }: ModalProps) => {
     return (
         <Dialog open={isOpen} onOpenChange={closeModal}>
-            <DialogContent>
+            {/* <DialogContent className='w-[300px] h-[500px] overflow-y-auto md:w-[600px] md:h-[500px]'> */}
+            <DialogContent className='w-[350px] md:w-[500px] overflow-y-auto  max-h-[500px]'>
                 <DialogTitle className="text-lg font-semibold">
                     {title}
                 </DialogTitle>
