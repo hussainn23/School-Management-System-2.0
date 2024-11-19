@@ -82,7 +82,7 @@ export default function ReusableTable<T>({
     };
 
     return (
-        <div className="w-full bg-gray-100">
+        <div className="max-w-[1050px] bg-gray-100">
             
             <div className="rounded-md border">
                 <Table>
