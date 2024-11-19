@@ -1,5 +1,3 @@
-// src/components/modals/TimeTableModal.tsx
-// import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '../ui/select';
 import { Input } from '../ui/input';
 import React from 'react';
 import { Modal } from '../common/Modal';
