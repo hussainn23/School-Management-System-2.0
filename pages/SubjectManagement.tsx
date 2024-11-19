@@ -16,8 +16,8 @@ const SubjectManagement: React.FC = () => {
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
 
   const data = [
-    { createdAt: '05-12-2024', classname: '9th', description: 'lorem ipsum dolor sit apum' },
-    { createdAt: '04-12-3000', classname: '10th', description: 'lorem ipsum dolor sit apum' },
+    { period: '7', subjectname: 'Physics', teacher: 'Ali', time:"--" },
+    { period: '8', subjectname: 'Chemistry', teacher: 'Nouman', time:"--" },
   ];
 
   const columns = [
