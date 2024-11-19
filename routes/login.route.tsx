@@ -1,4 +1,4 @@
-import React,{Suspense,lazy} from "react"
+import {Suspense,lazy} from "react"
 const Login = lazy(() => import('../pages/Login'));
 import {Loader} from "../src/components/common/Loader"
 import {Routes,Route} from "react-router-dom"

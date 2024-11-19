@@ -1,5 +1,4 @@
 import Table from '../src/components/common/Table';
-import React from 'react';
 import {
   DropdownMenu,
   DropdownMenuContent,
