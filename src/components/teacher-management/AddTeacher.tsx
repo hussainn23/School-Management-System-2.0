@@ -1,5 +1,4 @@
 import { ArrowLeft } from 'lucide-react';
-import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import {
@@ -51,7 +50,6 @@ const formSchema = z.object({
 });
 
 export default function AddTeacher() {
-  const [image, setImage] = useState<File | null>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
