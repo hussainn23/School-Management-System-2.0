@@ -56,7 +56,7 @@ const SectionManagement = () => {
 
   return (
     <div className="p-4 sm:p-6">
-      <div className="flex flex-col sm:flex-row sm:justify-between items-start sm:items-center gap-4 mb-3">
+      <div className="flex justify-between items-center mb-3">
         <h2 className="font-semibold text-lg sm:text-xl lg:text-2xl">
           Section Management
         </h2>

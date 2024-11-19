@@ -1,5 +1,7 @@
-import React, { Suspense, lazy } from "react"
+import  { Suspense, lazy } from "react"
 const ClassManagement = lazy(() => import('../pages/ClassManagement'));
+const SectionManagement = lazy(() => import('../pages/SectionManagement'))
+const TeacherManagement = lazy(() => import('../pages/TeacherManagement'))
 const SubjectManagement = lazy(() => import('../pages/SubjectManagement'));
 import { Loader } from "../src/components/common/Loader"
 import { Routes, Route } from "react-router-dom"
@@ -11,6 +13,18 @@ export const AdminRoutes = () => {
             <Suspense fallback={<Loader />}>
                 <Routes>
                     <Route path="/admin/class-management" element={<ClassManagement />} />
+                </Routes>
+            </Suspense>
+
+            <Suspense fallback={<Loader />}>
+                <Routes>
+                    <Route path="/admin/section-management" element={<SectionManagement />} />
+                </Routes>
+            </Suspense>
+
+            <Suspense fallback={<Loader />}>
+                <Routes>
+                    <Route path="/admin/teacher-management/*" element={<TeacherManagement />} />
                 </Routes>
             </Suspense>
 
