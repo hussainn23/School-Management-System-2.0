@@ -1,5 +1,4 @@
-// src/components/modals/TimeTableModal.tsx
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '../ui/select';
+
 import { Input } from '../ui/input';
 import React from 'react';
 import { Modal } from '../common/Modal';
@@ -10,7 +9,7 @@ interface TimeTableModalProps {
   subjectName: string;
 }
 
-const TimeTableModal: React.FC<TimeTableModalProps> = ({ isOpen, closeModal, subjectName }) => {
+const TimeTableModal: React.FC<TimeTableModalProps> = ({ isOpen, closeModal }) => {
   return (
     <Modal title="Time Table" isOpen={isOpen} closeModal={closeModal} doSomething={() => console.log('Time Table action')}>
         <form className="flex flex-col gap-4">
