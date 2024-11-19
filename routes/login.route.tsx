@@ -1,13 +1,13 @@
 import { Route, Routes } from 'react-router-dom';
 import React, { lazy, Suspense } from 'react';
-const Dashboard = lazy(() => import('../pages/Dashboard'));
+const Login = lazy(() => import('../pages/Login'));
 import { Loader } from '../src/components/common/Loader';
 
-export const HomePageRoute: React.FC = () => {
+export const LoginRoute: React.FC = () => {
   return (
     <Suspense fallback={<Loader />}>
       <Routes>
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </Suspense>
   );

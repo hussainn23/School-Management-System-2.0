@@ -1,3 +1,4 @@
-body{
-    font-family: 'Montserrat',serif;
+body {
+  font-family: 'Montserrat', serif;
+  overflow-x: hidden;
 }
