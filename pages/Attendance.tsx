@@ -69,6 +69,7 @@ function Attendance() {
                     </div>
                 </div>
 
+{/*  */}
 
                 <div className="bg-white py-4 grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
                     {/* First Column */}
