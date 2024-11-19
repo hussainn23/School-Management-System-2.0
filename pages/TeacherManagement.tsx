@@ -2,15 +2,15 @@ import { Route, Routes } from 'react-router-dom';
 import Table from '../src/components/common/Table';
 import { Button } from '../src/components/ui/button';
 import { Eye, Plus, Printer } from 'lucide-react';
-import { useState } from 'react';
+// import { useState } from 'react';
 import AddTeacher from '@/components/teacher-management/AddTeacher';
 import { Link } from 'react-router-dom';
 
 const MainPage = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+//   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+//   const openModal = () => setIsModalOpen(true);
+//   const closeModal = () => setIsModalOpen(false);
 
   const data = [
     {
@@ -52,7 +52,7 @@ const MainPage = () => {
     {
       key: 'actions',
       header: 'Actions',
-      render: (item: unknown) => <Eye />,
+      render: () => <Eye />,
     },
   ];
 

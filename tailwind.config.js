@@ -5,13 +5,15 @@ export default {
         './index.html',
         './src/**/*.{js,ts,jsx,tsx}',
         './routes/**/*.tsx',
+		'./pages/**/*.{js,ts,jsx,tsx}'
     ],
     theme: {
     	extend: {
+			
     		borderRadius: {
     			lg: 'var(--radius)',
     			md: 'calc(var(--radius) - 2px)',
-    			sm: 'calc(var(--radius) - 4px)'
+    			sm: 'calc(var(--radius) - 4px)',
     		},
     		colors: {
     			background: 'hsl(var(--background))',

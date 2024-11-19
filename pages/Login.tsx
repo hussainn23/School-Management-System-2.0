@@ -1,4 +1,3 @@
-import React from 'react';
 import { Input } from '../src/components/ui/input';
 import { Button } from '../src/components/ui/button';
 import {
@@ -17,7 +16,7 @@ function Login() {
 
   return (
     <div className='w-full min-h-screen bg-[#1A55A5] flex justify-center items-center bg-[url("../src/assets/bgLogin.svg")] bg-no-repeat bg-center '>
-      {/* <Card className='sm:h-[400px] md:h-[430px] xl:h-[500px] sm:w-[260px] md:w-[350px] xl:w-[450px] w-[556px] sm:px-[4px] md:px-[7px] xl:px-[15px] px-[24px] sm:py-[4px] md:py-[7px] xl:py-[15px] py-[40px]'> */}
+      
       <Card className="p-5 m-3 md:m-0">
         <CardHeader className="flex flex-col w-full items-center">
           <img

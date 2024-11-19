@@ -3,6 +3,7 @@ const ClassManagement = lazy(() => import('../pages/ClassManagement'));
 const SectionManagement = lazy(() => import('../pages/SectionManagement'))
 const TeacherManagement = lazy(() => import('../pages/TeacherManagement'))
 const SubjectManagement = lazy(() => import('../pages/SubjectManagement'));
+const Attendance = lazy(() => import('../pages/Attendance'));
 import { Loader } from "../src/components/common/Loader"
 import { Routes, Route } from "react-router-dom"
 
@@ -31,6 +32,12 @@ export const AdminRoutes = () => {
             <Suspense fallback={<Loader />}>
                 <Routes>
                     <Route path="/admin/subject-management" element={<SubjectManagement />} />
+                </Routes>
+            </Suspense>
+            
+            <Suspense fallback={<Loader />}>
+                <Routes>
+                    <Route path="/admin/attendance" element={<Attendance />} />
                 </Routes>
             </Suspense>
         </>
