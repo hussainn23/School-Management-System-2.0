@@ -42,10 +42,10 @@ const navigation = [
         icon: Users,
         submenu: [
             { name: 'Class Management', href: '/admin/class-management' },
-            { name: 'Section Management', href: '/admin/section' },
-            { name: 'Teacher Management', href: '/admin/teacher' },
+            { name: 'Section Management', href: '/admin/section-management' },
+            { name: 'Teacher Management', href: '/admin/teacher-management' },
             { name: 'Subject Management', href: '/admin/subject-management' },
-            { name: 'Transport Management', href: '/admin/transport' },
+            { name: 'Transport Management', href: '/admin/transport-management' },
             { name: 'Attendance', href: '/admin/attendance' },
             { name: 'Student Report', href: '/admin/student-report' },
         ],
