@@ -51,7 +51,6 @@ const formSchema = z.object({
 });
 
 export default function AddTeacher() {
-  const [image, setImage] = useState<File | null>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
