@@ -2,12 +2,12 @@ import { Modal } from '../common/Modal';
 import { Input } from '../ui/input';
 import { Textarea } from '../ui/textarea';
 
-interface AddSubjectProps {
+interface AddClassProps {
   isModalOpen: boolean;
   closeModal: () => void;
 }
 
-const AddSubject = ({ isModalOpen, closeModal }: AddSubjectProps) => {
+const AddClassModal = ({ isModalOpen, closeModal }: AddClassProps) => {
   return (
     <Modal
       title="Add New Class"
@@ -39,4 +39,4 @@ const AddSubject = ({ isModalOpen, closeModal }: AddSubjectProps) => {
   );
 };
 
-export default AddSubject;
+export default AddClassModal;

@@ -1,6 +1,8 @@
-import { Settings,Bell } from "lucide-react";
+import { Settings } from "lucide-react";
 import { Button } from "../ui/button";
 import { SidebarTrigger } from "../ui/sidebar";
+import { Notifications } from "./notifications";
+import { UserButton } from "./user-button";
 
 export const Navbar = () => {
     return (
@@ -15,12 +17,11 @@ export const Navbar = () => {
                 <span className="text-muted-foreground text-sm hidden md:flex">
                     Last login: 19:00:00 - 12/02/2024{' '}
                 </span>
-                <Button variant={'accent'} className="h-10 w-10">
-                    <Bell size={27} className="font-extrabold" />
-                </Button>
+                <Notifications />
                 <Button variant={'accent'} className="h-10 w-10">
                     <Settings size={27} className="font-extrabold" />
                 </Button>
+                <UserButton />
             </div>
         </header>
     );

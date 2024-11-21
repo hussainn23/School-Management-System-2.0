@@ -7,18 +7,22 @@ import {
 } from '../src/components/ui/dropdown-menu';
 import {Button} from "../src/components/ui/button"
 import { MoreHorizontal, Plus, Printer } from 'lucide-react';
-import { Modal } from '../src/components/common/Modal';
 import { useState } from 'react';
-import { Input } from '../src/components/ui/input';
-import { Textarea } from '../src/components/ui/textarea';
+import AddClassModal from '@/components/class-management/AddClass';
+import DeleteConfirmation from '@/components/common/DeleteConfirmation';
+
 
 
 const ClassManagement = () => {
-
     const [isModalOpen,setIsModalOpen] = useState(false)
+    const [isDeleteModal,setIsDeleteModal] = useState(false)
 
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
+
+    const openDeleteModal = () => setIsDeleteModal(true);
+    const closeDeleteModal = () => setIsDeleteModal(false);
+    
 
     const data = [
         {
@@ -54,7 +58,7 @@ const ClassManagement = () => {
                             Edit
                         </DropdownMenuItem>
                         <DropdownMenuItem
-                            onClick={() => console.log('Delete', item)}
+                            onClick={() => openDeleteModal()}
                         >
                             Delete
                         </DropdownMenuItem>
@@ -86,36 +90,9 @@ const ClassManagement = () => {
                 </div>
             </div>
 
-            <Modal
-                title="Add New Class"
-                isOpen={isModalOpen}
-                closeModal={closeModal}
-                doSomething={() => {console.log('Modal action!'); closeModal()}}
-            >
-                <form className="flex flex-col gap-4">
-                    <div className="flex flex-col gap-1">
-                        <label
-                            htmlFor="classname"
-                            className="text-sm text-muted-foreground"
-                        >
-                            Class Name
-                        </label>
-                        <Input
-                            name="classname"
-                            placeholder="Classname e.g: 9th,10th"
-                        />
-                    </div>
-                    <div className="flex flex-col gap-1">
-                        <label
-                            htmlFor="description"
-                            className="text-sm text-muted-foreground"
-                        >
-                            Description
-                        </label>
-                        <Textarea name="description" placeholder="Description" />
-                    </div>
-                </form>
-            </Modal>
+            <AddClassModal closeModal={closeModal} isModalOpen={isModalOpen} />
+
+            <DeleteConfirmation isModalOpen={isDeleteModal} closeModal={closeDeleteModal} doSomething={() => {}} />
 
             <Table data={data} columns={columns} itemsPerPage={20} />
         </div>

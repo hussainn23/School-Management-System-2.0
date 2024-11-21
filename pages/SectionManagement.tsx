@@ -9,12 +9,17 @@ import { Button } from '../src/components/ui/button';
 import { MoreHorizontal, Plus, Printer } from 'lucide-react';
 import { useState } from 'react';
 import AddSection from '../src/components/section-management/AddSection';
+import DeleteConfirmation from '@/components/common/DeleteConfirmation';
 
 const SectionManagement = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeleteModal, setIsDeleteModal] = useState(false);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+
+   const openDeleteModal = () => setIsDeleteModal(true);
+   const closeDeleteModal = () => setIsDeleteModal(false);
 
   const data = [
     {
@@ -44,7 +49,7 @@ const SectionManagement = () => {
             <DropdownMenuItem onClick={() => console.log('Edit', item)}>
               Edit
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => console.log('Delete', item)}>
+            <DropdownMenuItem onClick={() => openDeleteModal()}>
               Delete
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -75,6 +80,11 @@ const SectionManagement = () => {
         </div>
       </div>
 
+      <DeleteConfirmation
+        isModalOpen={isDeleteModal}
+        closeModal={closeDeleteModal}
+        doSomething={() => {}}
+      />
       <AddSection isModalOpen={isModalOpen} closeModal={closeModal} />
 
       <Table data={data} columns={columns} itemsPerPage={20} />
