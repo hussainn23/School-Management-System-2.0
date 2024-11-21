@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import logo from '/logo.svg';
 import {
   BookOpen,
   Building2,
@@ -127,7 +126,7 @@ export function AppSidebar() {
             to="/"
             className="flex items-center gap-2 font-semibold justify-center m-auto"
           >
-            <img src={logo} alt="Logo" className="w-28" />
+            <img src='/main-logo.svg' alt="Logo" className="w-40" />
           </Link>
         </div>
       </SidebarHeader>

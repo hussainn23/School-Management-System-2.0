@@ -1,243 +1,350 @@
-import { ArrowRight, Calculator, Flag, ListChecks, Users2 } from 'lucide-react';
+import { Calendar, ChevronDown, ChevronUp, DollarSign, Edit, Eye, MessageSquare } from 'lucide-react';
+import { Button } from '../ui/button';
+import { Link } from 'react-router-dom';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import DoughnutChart from '@/charts/Doughnut';
+import CombinedChart from '@/charts/AccountChart';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import { Input } from '../ui/input';
+import { ExamsPercentage } from './ExamPercentage';
 
-import { Card, CardContent, CardHeader } from '../ui/card';
-import { Progress } from '../ui/progress';
-
-const grades = [
-    { name: '10th', value: 80, color: 'bg-emerald-500' },
-    { name: '9th', value: 80, color: 'bg-emerald-500' },
-    { name: '8th', value: 80, color: 'bg-emerald-500' },
-    { name: '6th', value: 40, color: 'bg-orange-400' },
-    { name: '5th', value: 40, color: 'bg-orange-400' },
-    { name: '4th', value: 40, color: 'bg-orange-400' },
-    { name: '3rd', value: 40, color: 'bg-orange-400' },
-    { name: '2nd', value: 40, color: 'bg-red-500' },
-    { name: '1st', value: 40, color: 'bg-red-500' },
+const attendanceData = [
+  { name: 'Present', value: 1754, color: '#4CAF50' },
+  { name: 'Absent', value: 1254, color: '#F44336' },
+  { name: 'On Leave', value: 878, color: '#2196F3' },
 ];
 
-export const DashboardContent = () => {
-    return (
-        <div className="p-4 sm:p-6">
-            <h2 className="font-semibold text-xl sm:text-2xl mb-3">
-                Dashboard
-            </h2>
-            <div className="grid gap-6 grid-cols-12">
-                <div className="space-y-6 lg:col-span-8 col-span-12">
-                    <div className="grid gap-6 md:grid-cols-1">
-                        <Card className="shadow-md rounded-3xl">
-                            <CardContent className="flex flex-col gap-5 px-4 sm:px-6 py-6 sm:py-8">
-                                <div className="flex items-center gap-4">
-                                    <div className="rounded-lg bg-orange-50 p-5 sm:p-7">
-                                        <Users2 className="h-8 w-8 sm:h-10 sm:w-10 text-orange-400" />
-                                    </div>
-                                    <div>
-                                        <p className="text-md sm:text-lg font-semibold text-gray-600">
-                                            Total Students
-                                        </p>
-                                        <h3 className="text-3xl sm:text-4xl font-bold text-gray-600">
-                                            1,290
-                                        </h3>
-                                    </div>
-                                    <ArrowRight className="ml-auto h-12 w-12 sm:h-16 sm:w-16 text-orange-500 opacity-90" />
-                                </div>
 
-                                <MainCardComponent
-                                    title="Status"
-                                    first="Suspended"
-                                    firstData={1256}
-                                    second="Struck off"
-                                    secondData={1256}
-                                    third="Pending"
-                                    thirdData={1256}
-                                />
 
-                                <MainCardComponent
-                                    title="Attendance"
-                                    first="Present"
-                                    firstData={1256}
-                                    second="Absent"
-                                    secondData={1256}
-                                    third="On Leave"
-                                    thirdData={1256}
-                                />
-                            </CardContent>
-                        </Card>
-                    </div>
 
-                    {/* Bottom Stats */}
-                    <div className="grid gap-6 md:grid-cols-4">
-                        <Card className="md:col-span-2 p-4 sm:p-6 shadow-md rounded-3xl border-none bg-white">
-                            <CardContent>
-                                <div className="flex flex-col gap-6 sm:gap-10">
-                                    <div className="flex items-center justify-between">
-                                        <div className="flex items-center gap-4">
-                                            <div className="rounded-lg bg-blue-50 p-4 sm:p-5">
-                                                <Calculator className="h-8 w-8 sm:h-10 sm:w-10 text-blue-500" />
-                                            </div>
-                                            <div>
-                                                <p className="text-sm font-semibold text-gray-600">
-                                                    Accounts (Total Fee)
-                                                </p>
-                                                <h3 className="text-xl sm:text-2xl font-normal text-gray-800">
-                                                    Rs. 12930.00/-
-                                                </h3>
-                                            </div>
-                                        </div>
-                                        <ArrowRight className="ml-auto h-12 w-12 sm:h-16 sm:w-16 text-blue-500 opacity-90" />
-                                    </div>
-                                    <div className="space-y-4">
-                                        <div>
-                                            <div className="mb-2 flex justify-between text-sm">
-                                                <span className="text-muted-foreground font-semibold">
-                                                    Received Amount
-                                                </span>
-                                                <span className="font-semibold text-muted-foreground">
-                                                    Rs. 124.00
-                                                </span>
-                                            </div>
-                                            <Progress
-                                                value={33}
-                                                className="h-3 bg-gray-100"
-                                                bgColor="bg-orange-500"
-                                            />
-                                        </div>
-                                        <div>
-                                            <div className="mb-2 flex justify-between text-sm">
-                                                <span className="text-muted-foreground font-semibold">
-                                                    Pending Amount
-                                                </span>
-                                                <span className="font-semibold text-muted-foreground">
-                                                    Rs. 12134.00
-                                                </span>
-                                            </div>
-                                            <Progress
-                                                value={66}
-                                                className="h-3 bg-gray-100"
-                                                bgColor="bg-violet-500"
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                            </CardContent>
-                        </Card>
-                        <div className="md:col-span-2 flex flex-col justify-between gap-4">
-                            <Card className="shadow-md rounded-3xl">
-                                <CardContent className="flex items-center gap-4 sm:gap-5 p-4 sm:p-6">
-                                    <div className="rounded-lg bg-emerald-50 p-4 sm:p-5">
-                                        <Users2 className="h-8 w-8 sm:h-10 sm:w-10 text-emerald-500" />
-                                    </div>
-                                    <div>
-                                        <p className="text-md sm:text-lg font-medium text-gray-600">
-                                            Total Teachers
-                                        </p>
-                                        <h3 className="text-3xl sm:text-4xl font-bold text-gray-700">
-                                            90
-                                        </h3>
-                                    </div>
-                                    <ArrowRight className="ml-auto h-12 w-12 sm:h-16 sm:w-16 text-emerald-500" />
-                                </CardContent>
-                            </Card>
-                            <Card className="shadow-md rounded-3xl">
-                                <CardContent className="flex items-center gap-4 sm:gap-5 p-4 sm:p-6">
-                                    <div className="rounded-lg bg-red-100 p-4 sm:p-5">
-                                        <Flag className="h-8 w-8 sm:h-10 sm:w-10 text-red-500" />
-                                    </div>
-                                    <div>
-                                        <p className="text-md sm:text-lg font-medium text-gray-600">
-                                            Upcoming Events
-                                        </p>
-                                        <h3 className="text-3xl sm:text-4xl font-bold text-gray-700">
-                                            30
-                                        </h3>
-                                    </div>
-                                    <ArrowRight className="ml-auto h-12 w-12 sm:h-16 sm:w-16 text-red-500" />
-                                </CardContent>
-                            </Card>
-                        </div>
-                    </div>
-                </div>
+const events = [
+  {
+    name: 'Quaid e Azam Day',
+    date: '2024-05-18',
+    status: 'Upcoming',
+    description: 'Lorem ipsum dummy text and filler',
+  },
+  {
+    name: '23rd March Holiday',
+    date: '2024-05-19',
+    status: 'Done',
+    description: 'Lorem ipsum dummy text and filler',
+  },
+  {
+    name: 'Pakistan Day',
+    date: '2024-05-20',
+    status: 'Missed',
+    description: 'Lorem ipsum dummy text and filler',
+  },
+];
 
-                {/* Right Section - Grade Performance */}
-                <Card className="lg:col-span-4 col-span-12 rounded-3xl shadow-md">
-                    <CardHeader className="flex flex-row gap-4 sm:gap-5 p-4 sm:p-6">
-                        <div className="rounded-lg bg-green-100 p-4 sm:p-5">
-                            <ListChecks className="h-8 w-8 sm:h-10 sm:w-10 text-green-500" />
-                        </div>
-                        <div>
-                            <p className="text-md sm:text-lg font-semibold text-gray-600">
-                                Exams Total Percentage
-                            </p>
-                            <h3 className="text-3xl sm:text-4xl font-bold text-gray-700">
-                                80%
-                            </h3>
-                        </div>
-                        <ArrowRight className="ml-auto h-12 w-12 sm:h-16 sm:w-16 text-green-500" />
-                    </CardHeader>
-                    <CardContent>
-                        <div className="space-y-6 sm:space-y-8">
-                            {grades.map((grade) => (
-                                <div key={grade.name} className="space-y-2">
-                                    <div className="flex items-center justify-between text-sm">
-                                        <span className="font-semibold text-[14px] sm:text-[16px] text-gray-700">
-                                            {grade.name}
-                                        </span>
-                                        <span className="text-gray-800 font-semibold">
-                                            {grade.value}%
-                                        </span>
-                                    </div>
-                                    <Progress
-                                        value={grade.value}
-                                        className="h-2"
-                                        bgColor={grade.color}
-                                    />
-                                </div>
-                            ))}
-                        </div>
-                    </CardContent>
-                </Card>
-            </div>
+export function DashboardContent() {
+  return (
+    <div className="p-6 bg-gray-50 min-h-full mb-20">
+      <div className="flex justify-between items-center mb-6">
+        <div>
+          <h2 className="text-2xl font-bold">Welcome Back, Jack Miller</h2>
+          <p className="text-gray-600 text-xs">Let's dive in and get things done.</p>
         </div>
-    );
-};
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-gray-600 bg-white shadow-sm p-2 rounded-sm flex justify-center items-center gap-2 font-semibold">
+            <Calendar />
+            May, 01 2024 to May, 30 2024
+          </span>
+          <Button variant="theme">Export report</Button>
+        </div>
+      </div>
 
-const MainCardComponent = ({
-    title,
-    first,
-    firstData,
-    second,
-    secondData,
-    third,
-    thirdData,
-}: {
-    title: string;
-    first: string;
-    firstData: number;
-    second: string;
-    secondData: number;
-    third: string;
-    thirdData: number;
-}) => {
+      <div className="grid grid-cols-4 gap-3 min-h-full">
+        <div className="col-span-3 flex flex-col gap-3">
+          <HeaderCards />
+          <div className="grid grid-cols-3 gap-3 w-full ">
+            <AttendanceData />
+            <div className="col-span-2 flex flex-col gap-3">
+                <Accounts />
+                <UpcomingEvents />
+            </div>
+          </div>
+        </div>
+        <div className="">
+            <ExamsPercentage />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function HeaderCards() {
+  return (
+    <div className="flex justify-between items-center w-full gap-4">
+      <div className="flex flex-col gap-2 w-full p-4 bg-white rounded-sm shadow-md">
+        <div className="flex justify-between items-center ">
+          <h4 className="text-gray-800 font-semibold text-lg">
+            Total Students
+          </h4>
+          <MessageSquare
+            size={35}
+            className={`bg-theme p-2 rounded-full text-white`}
+          />
+        </div>
+        <h5 className="font-light text-3xl">1,290</h5>
+        <div className="flex justify-between items-center mt-2">
+          <Link to={'#'} className="text-sm text-muted-foreground underline">
+            {' '}
+            View all students
+          </Link>
+          <p className="text-green-500 text-sm">0.29%</p>
+        </div>
+      </div>
+      <div className="flex flex-col gap-2 w-full p-4 bg-white rounded-sm shadow-md">
+        <div className="flex justify-between items-center ">
+          <h4 className="text-gray-800 font-semibold text-lg">
+            Total Teachers
+          </h4>
+          <DollarSign
+            size={35}
+            className={`bg-orange-400 p-2 rounded-full text-white`}
+          />
+        </div>
+        <h5 className="font-light text-3xl">120</h5>
+        <div className="flex justify-between items-center mt-2">
+          <Link to={'#'} className="text-sm text-muted-foreground underline">
+            {' '}
+            View all teachers
+          </Link>
+          <p className="text-red-500 text-sm">3.45%</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function AttendanceData() {
+  const chartData = {
+    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+    datasets: [
+      {
+        data: [12, 19, 3, 5, 2, 3],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.6)',
+          'rgba(54, 162, 235, 0.6)',
+          'rgba(255, 206, 86, 0.6)',
+          'rgba(75, 192, 192, 0.6)',
+          'rgba(153, 102, 255, 0.6)',
+          'rgba(255, 159, 64, 0.6)',
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const chartOptions = {
+    responsive: true,
+    plugins: {
+      cutout: '75%',
+      legend: {
+        display: false,
+      },
+      tooltip: {
+        enabled: true,
+      },
+    },
+  };
+
+  return (
+    <div className="flex flex-col bg-white rounded-sm shadow-md min-h-full">
+      <div className="flex justify-between items-center w-full shadow-sm p-4">
+        <h4 className="text-gray-800 font-semibold text-lg">Attendace</h4>
+        <DropdownMenu>
+          <DropdownMenuTrigger className="flex gap-1 text-sm text-muted-foreground">
+            Sort By <ChevronDown size={20} />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem>Ascending</DropdownMenuItem>
+            <DropdownMenuItem>Descending</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+      <div className="p-5">
+        <DoughnutChart
+          data={chartData}
+          options={chartOptions}
+          width="300px"
+          height="300px"
+          backgroundColor="#ffffff"
+          centerText="Total Present"
+          total={7595}
+        />
+      </div>
+
+      <div className="flex flex-col gap-2 mt-3 p-4">
+        {attendanceData.map((attendance, i) => (
+          <div className="flex flex-col shadow-sm" key={i}>
+            <div className="flex justify-between items-center">
+              <span
+                className="text-sm flex items-center gap-2"
+                id="attendanceLabel"
+              >
+                {attendance.name}
+              </span>
+              <span className="text-sm">{attendance.value}</span>
+            </div>
+            <div className="flex text-xs gap-2 ml-3">
+              <span className="text-muted-foreground">Increased By</span>
+              <span className={`text-[#735DFF]`}>0.54%</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function Accounts() {
+
+    const labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    const barData = [3000, 4000, 3200, 5000, 2800, 4500, 3900];
+    const lineData = [3500, 4200, 3400, 4700, 3000, 4800, 3700];
+
+  return (
+    <div className="flex flex-col bg-white rounded-sm shadow-md gap-3">
+      <div className="flex justify-between items-center w-full shadow-sm p-4">
+        <h4 className="text-gray-800 font-semibold text-lg">Accounts</h4>
+        <DropdownMenu>
+          <DropdownMenuTrigger className="flex gap-1 text-sm text-muted-foreground">
+            Sort By <ChevronDown size={20} />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem>Ascending</DropdownMenuItem>
+            <DropdownMenuItem>Descending</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+      <div className="flex justify-between items-center w-full p-4 gap-3">
+        <div className="flex flex-col gap-3 w-full bg-gray-50 rounded-sm shadow-sm p-3">
+          <div className="flex justify-between items-center ">
+            <h4 className="text-gray-800 font-light text-[15px]">
+              Pending Amount
+            </h4>
+            <span className="flex justify-center items-center gap-1 text-green-500 text-sm">
+              <span> 0.54%</span>
+              <ChevronUp className="text-green-500" size={16} />
+            </span>
+          </div>
+          <h5 className="font-light text-xl">Pkr, 120</h5>
+        </div>
+        <div className="flex flex-col gap-3 w-full bg-gray-50 rounded-sm shadow-sm p-3">
+          <div className="flex justify-between items-center ">
+            <h4 className="text-gray-800 font-light text-[15px]">
+              Received Amount
+            </h4>
+            <span className="flex justify-center items-center gap-1 text-red-500 text-sm">
+              <span> 0.54%</span>
+              <ChevronDown className="text-red-500" size={16} />
+            </span>
+          </div>
+          <h5 className="font-light text-xl">12,326</h5>
+        </div>
+      </div>
+
+      <CombinedChart
+        labels={labels}
+        barData={barData}
+        lineData={lineData}
+        barColor="#735DFF"
+        lineColor="#FF5733"
+      />
+    </div>
+  );
+}
+
+
+function UpcomingEvents(){
     return (
-        <>
-            <div className="w-full bg-gray-100 p-2">
-                <span className="font-bold text-lg">{title}</span>
-            </div>
-            <div className="grid md:grid-cols-3 grid-cols-1">
-                <div className="flex justify-center items-center flex-col p-5 shadow-md gap-y-3 rounded-md">
-                    <span className="text-gray-600 font-semibold">{first}</span>
-                    <span className="text-2xl">{firstData}</span>
+      <Card className="shadow-md rounded-sm">
+        <CardHeader className="flex flex-row justify-between items-center p-4 shadow-sm">
+          <CardTitle className="text-gray-800 text-lg">
+            Upcoming Events
+          </CardTitle>
+          <div className="flex items-center gap-2">
+            <Input placeholder="Search Here" className="w-48 h-8" />
+            <DropdownMenu>
+              <DropdownMenuTrigger className="flex gap-1 text-sm text-muted-foreground">
+                Sort By <ChevronDown size={20} />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem>Ascending</DropdownMenuItem>
+                <DropdownMenuItem>Descending</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </CardHeader>
+        <CardContent className="flex flex-col">
+          <div className="grid grid-cols-12 gap-3 py-2 border-b text-sm font-medium">
+            <span className="col-span-4">Name</span>
+            <span className="col-span-2">Status</span>
+            <span className="col-span-3">Date</span>
+            <span className="col-span-3">Action</span>
+          </div>
+          {/* Table Rows */}
+          <div className="space-y-1">
+            {events.map((event, index) => (
+              <div key={index} className="grid grid-cols-12 gap-3 py-2 border-b">
+                {/* Name and description column */}
+                <div className="flex items-center gap-4 col-span-4">
+                  <div className="bg-gray-100 p-2 rounded-md">
+                    <Calendar className="h-5 w-5 text-blue-500" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-sm">{event.name}</p>
+                    <p className="text-gray-500 text-xs">{event.description}</p>
+                  </div>
                 </div>
-                <div className="flex justify-center items-center flex-col p-5 shadow-md gap-y-3 rounded-md">
-                    <span className="text-gray-600 font-semibold">
-                        {second}
-                    </span>
-                    <span className="text-2xl">{secondData}</span>
+
+                {/* Status column */}
+                <div className="flex items-center gap-4 col-span-2">
+                  <span
+                    className={`p-1 w-20 text-center rounded-sm text-xs font-medium ${
+                      event.status === 'Upcoming'
+                        ? 'bg-purple-100 text-purple-500'
+                        : event.status === 'Done'
+                          ? 'bg-green-100 text-green-500'
+                          : 'bg-red-100 text-red-500'
+                    }`}
+                  >
+                    {event.status}
+                  </span>
                 </div>
-                <div className="flex justify-center items-center flex-col p-5 shadow-md gap-y-3 rounded-md">
-                    <span className="text-gray-600 font-semibold">{third}</span>
-                    <span className="text-2xl">{thirdData}</span>
+
+                {/* Date column */}
+                <span className="text-sm col-span-3 flex items-center">{event.date}</span>
+
+                {/* Action buttons column */}
+                <div className="flex gap-2 col-span-3">
+                  <button className="bg-purple-100 p-2 rounded-full h-10 w-10 flex justify-center items-center">
+                    <Eye className="text-purple-500" size={15} />
+                  </button>
+                  <button className="bg-orange-100 p-2 rounded-full h-10 w-10 flex justify-center items-center">
+                    <Edit className="text-orange-500" size={15} />
+                  </button>
                 </div>
-            </div>
-        </>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
     );
-};
+}

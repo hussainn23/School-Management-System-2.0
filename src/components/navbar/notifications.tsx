@@ -11,7 +11,7 @@ export const Notifications = () => {
     return (
       <Popover>
         <PopoverTrigger>
-          <Button variant={'accent'} className="h-10 w-10 relative">
+          <Button variant={'ghost'} className="h-10 w-10 relative bg-gray-100">
             <Bell size={27} className="font-extrabold" />
             <div className="absolute -top-1 -right-1 bg-red-400 rounded-full w-5 h-5 text-[11px] text-white">
               49

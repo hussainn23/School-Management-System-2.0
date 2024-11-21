@@ -6,13 +6,14 @@ import { LogOut } from 'lucide-react';
 
 export const UserButton = () => {
     return (
-      <div className="border-l pl-2 mt-2">
+      <div className="">
         <Popover>
-          <PopoverTrigger>
+          <PopoverTrigger className='flex items-center gap-1'>
             <Avatar>
-              <AvatarImage src="https://github.com/shadcn.png" />
+              <AvatarImage src="https://github.com/shadcn.png" className='' />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
+            <span className='text-sm text-muted-foreground'>Mr. Jack</span>
           </PopoverTrigger>
           <PopoverContent
             align="end"
