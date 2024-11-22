@@ -23,7 +23,7 @@ export const Modal = ({ children, title, isOpen, closeModal,doSomething }: Modal
                 </DialogTitle>
                 <div>{children}</div>
                 <DialogFooter className="flex gap-2">
-                    <Button variant={'default2'} onClick={doSomething}>
+                    <Button  onClick={doSomething}>
                         Save 
                     </Button>
                     <Button variant="outline" onClick={closeModal}>
