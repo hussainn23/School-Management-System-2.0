@@ -45,38 +45,49 @@ const chartOptions = {
 
 export function ExamsPercentage() {
   return (
-    <Card className="shadow-md rounded-sm min-h-full">
+    <Card className="shadow-md rounded-sm min-h-full bg-white dark:bg-gray-800">
       <CardHeader className="p-4">
-        <CardTitle className='text-lg'>Exams Percentage</CardTitle>
+        <CardTitle className="text-lg text-gray-800 dark:text-gray-100">
+          Exams Percentage
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col items-center">
-          <div className="w-60 h-40 relative">
+          <div className="w-60 h-48 relative">
             <Doughnut data={chartData} options={chartOptions} />
-            <div className="absolute inset-0 top-10 flex flex-col items-center justify-center">
-              <p className="text-sm text-gray-500">
+            <div className="absolute top-24 left-11 flex flex-col items-center justify-center">
+              <p className="text-sm text-gray-500 dark:text-gray-400">
                 Total Percentage
               </p>
-              <p className="text-2xl font-bold">80%</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+                80%
+              </p>
             </div>
           </div>
         </div>
-        <div className="mt-6  border rounded-sm">
+        <div className="mt-6 border rounded-sm border-gray-300 dark:border-gray-700">
           {grades.map((grade) => (
-            <div key={grade.name} className="flex items-center justify-between border-b p-5">
+            <div
+              key={grade.name}
+              className="flex items-center justify-between border-b p-5 border-gray-300 dark:border-gray-700"
+            >
               <div className="flex items-center gap-2">
                 <span
                   className="w-2 h-2 rounded-full"
                   style={{ backgroundColor: grade.color }}
                 ></span>
-                <span className="text-sm font-medium">{grade.name}</span>
+                <span className="text-sm font-medium text-gray-800 dark:text-gray-100">
+                  {grade.name}
+                </span>
               </div>
               <Progress
                 value={grade.value}
                 className="flex-1 mx-2"
                 indicatorColor={grade.color}
               />
-              <span className="text-sm font-medium">{grade.value}%</span>
+              <span className="text-sm font-medium text-gray-800 dark:text-gray-100">
+                {grade.value}%
+              </span>
             </div>
           ))}
         </div>
@@ -84,4 +95,3 @@ export function ExamsPercentage() {
     </Card>
   );
 }
-

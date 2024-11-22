@@ -36,14 +36,12 @@ const DoughnutChart: React.FC<DoughnutChartProps> = ({
   options,
   width = '50%',
   height = '400px',
-  backgroundColor = 'transparent',
 }) => {
   return (
     <div
       style={{
         width,
         height,
-        backgroundColor,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
