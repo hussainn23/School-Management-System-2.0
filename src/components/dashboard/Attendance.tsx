@@ -1,4 +1,5 @@
-import DoughnutChart from '@/charts/Doughnut';
+import { lazy } from 'react';
+const DoughnutChart = lazy(() => import("../../charts/Doughnut"))
 import {
   DropdownMenu,
   DropdownMenuContent,

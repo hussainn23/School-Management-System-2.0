@@ -1,10 +1,11 @@
+import { lazy } from 'react';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import CombinedChart from '@/charts/AccountChart';
+const CombinedChart = lazy(() => import('../../charts/AccountChart'));
 
 import { ChevronDown, ChevronUp } from 'lucide-react';
 

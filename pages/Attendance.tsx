@@ -7,67 +7,67 @@ import {
 } from '../src/components/ui/select';
 import { Button } from '../src/components/ui/button';
 import { Plus, Printer } from 'lucide-react';
-import Table from '../src/components/common/Table';
+// import Table from '../src/components/common/Table';
 import { Input } from '../src/components/ui/input';
 
 function Attendance() {
-  const data = [
-    {
-      sr: '1',
-      class: '9th',
-      section: 'A',
-      totoalStudents: '100',
-      leave: '2',
-      present: '95',
-      absent: '3',
-      classTeacher: 'Ali',
-      status: '--',
-    },
-    {
-      sr: '2',
-      class: '9th',
-      section: 'B',
-      totoalStudents: '110',
-      leave: '5',
-      present: '100',
-      absent: '5',
-      classTeacher: 'Noumans',
-      status: '--',
-    },
-  ];
+//   const data = [
+//     {
+//       sr: '1',
+//       class: '9th',
+//       section: 'A',
+//       totoalStudents: '100',
+//       leave: '2',
+//       present: '95',
+//       absent: '3',
+//       classTeacher: 'Ali',
+//       status: '--',
+//     },
+//     {
+//       sr: '2',
+//       class: '9th',
+//       section: 'B',
+//       totoalStudents: '110',
+//       leave: '5',
+//       present: '100',
+//       absent: '5',
+//       classTeacher: 'Noumans',
+//       status: '--',
+//     },
+//   ];
 
-  const columns = [
-    { key: 'sr', header: 'SR #' },
-    { key: 'class', header: 'Class', sortable: true },
-    { key: 'section', header: 'Section', sortable: true },
-    { key: 'totoalStudents', header: 'Total Students', sortable: true },
-    {
-      key: 'leave',
-      header: 'Leave',
-      sortable: true,
-      render: (item: any) => (
-        <span className="text-orange-400  font-semibold">{item.leave}</span>
-      ),
-    },
-    {
-      key: 'present',
-      header: 'Present',
-      sortable: true,
-      render: (item: any) => (
-        <span className="text-green-500 font-semibold">{item.present}</span>
-      ),
-    },
-    {
-      key: 'absent',
-      header: 'Absent',
-      sortable: true,
-      render: (item: any) => (
-        <span className="text-red-500 font-semibold">{item.absent}</span>
-      ),
-    },
-    { key: 'classTeacher', header: 'Class Teacher', sortable: true },
-    { key: 'status', header: 'Status', sortable: true },
-  ];
+//   const columns = [
+//     { key: 'sr', header: 'SR #' },
+//     { key: 'class', header: 'Class', sortable: true },
+//     { key: 'section', header: 'Section', sortable: true },
+//     { key: 'totoalStudents', header: 'Total Students', sortable: true },
+//     {
+//       key: 'leave',
+//       header: 'Leave',
+//       sortable: true,
+//       render: (item: any) => (
+//         <span className="text-orange-400  font-semibold">{item.leave}</span>
+//       ),
+//     },
+//     {
+//       key: 'present',
+//       header: 'Present',
+//       sortable: true,
+//       render: (item: any) => (
+//         <span className="text-green-500 font-semibold">{item.present}</span>
+//       ),
+//     },
+//     {
+//       key: 'absent',
+//       header: 'Absent',
+//       sortable: true,
+//       render: (item: any) => (
+//         <span className="text-red-500 font-semibold">{item.absent}</span>
+//       ),
+//     },
+//     { key: 'classTeacher', header: 'Class Teacher', sortable: true },
+//     { key: 'status', header: 'Status', sortable: true },
+//   ];
 
   return (
     <>
@@ -137,7 +137,7 @@ function Attendance() {
           </div>
         </div>
 
-        <Table data={data} columns={columns} itemsPerPage={20} />
+        {/* <Table data={data} columns={columns} itemsPerPage={20} /> */}
       </div>
     </>
   );
