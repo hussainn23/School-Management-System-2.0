@@ -8,7 +8,7 @@ export const Notifications = () => {
       <PopoverTrigger>
         <Button
           variant="ghost"
-          className="h-10 w-10 relative bg-gray-100 dark:bg-gray-800"
+          className="h-10 w-10 relative hover:bg-transparent dark:hover:bg-transparent"
         >
           <Bell size={27} className="font-extrabold dark:text-gray-300" />
           <div className="absolute -top-1 -right-1 bg-red-400 rounded-full w-5 h-5 text-[11px] text-white">

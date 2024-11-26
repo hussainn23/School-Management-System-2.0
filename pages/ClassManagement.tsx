@@ -1,102 +1,192 @@
-import Table from '../src/components/common/Table';
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from '../src/components/ui/dropdown-menu';
-import {Button} from "../src/components/ui/button"
-import { MoreHorizontal, Plus, Printer } from 'lucide-react';
-import { useState } from 'react';
+import { BaseTable } from '../src/components/common/Table';
+import { Button } from '../src/components/ui/button';
+import { Download, PlusCircle, Pencil, Trash2 } from 'lucide-react';
+import { useCallback, useState } from 'react';
 import AddClassModal from '@/components/class-management/AddClass';
 import DeleteConfirmation from '@/components/common/DeleteConfirmation';
+import { PageHeader } from '@/components/common/PageHeader';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
+import { Link } from 'react-router-dom';
+import { StatusBadge } from '@/components/ui/status-badge';
+import { TableHeader } from '@/components/common/TableHeader';
 
-
+interface ClassData {
+  id: string;
+  className: string;
+  description: string;
+  status: 'top-scored' | 'poor-results' | 'moderate';
+  createdDate: string;
+}
 
 const ClassManagement = () => {
-    const [isModalOpen,setIsModalOpen] = useState(false)
-    const [isDeleteModal,setIsDeleteModal] = useState(false)
 
-    const openModal = () => setIsModalOpen(true);
-    const closeModal = () => setIsModalOpen(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeleteModal, setIsDeleteModal] = useState(false);
 
-    const openDeleteModal = () => setIsDeleteModal(true);
-    const closeDeleteModal = () => setIsDeleteModal(false);
-    
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
-    const data = [
-        {
-            createdAt: '05-12-2024',
-            classname: '9th ',
-            description: 'lorem ipsum dolor sit apum',
-        },
-        {
-            createdAt: '04-12-3000',
-            classname: '10th ',
-            description: 'lorem ipsum dolor sit apum',
-        },
-    ];
+  const openDeleteModal = () => setIsDeleteModal(true);
+  const closeDeleteModal = () => setIsDeleteModal(false);
+
+
+
+
+
+  
+
+  const [searchQuery, setSearchQuery] = useState('');
+  const [sortConfig, setSortConfig] = useState<{
+      key: keyof ClassData | null;
+      direction: 'asc' | 'desc';
+    }>({ key: null, direction: 'asc' });
+    const [data, setData] = useState<ClassData[]>([
+      {
+        id: '1',
+        className: '9th',
+        description:
+          'Lorem ipsum is a dummy text and a dummy filler to replace the dummy lines in the place of dumm.',
+        status: 'top-scored',
+        createdDate: '2024-05-21',
+      },
+    ]);
+
 
     const columns = [
-        { key: 'createdAt', header: 'Created At' },
-        { key: 'classname', header: 'Class Name', sortable: true },
-        { key: 'description', header: 'Description', sortable: true },
-        {
-            key: 'actions',
-            header: 'Actions',
-            render: (item: unknown) => (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                            <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuItem
-                            onClick={() => console.log('Edit', item)}
-                        >
-                            Edit
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                            onClick={() => openDeleteModal()}
-                        >
-                            Delete
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            ),
-        },
+      {
+        header: 'Class Name',
+        accessorKey: 'className' as const,
+      },
+      {
+        header: 'Description',
+        accessorKey: 'description' as const,
+      },
+      {
+        header: 'Status',
+        accessorKey: 'status' as const,
+        cell: (row: ClassData) => <StatusBadge status={row.status} />,
+      },
+      {
+        header: 'Created Date',
+        accessorKey: 'createdDate' as const,
+      },
+      {
+        header: 'Action',
+        accessorKey: 'id' as const,
+        cell: (row: ClassData) => (
+          <div className="flex gap-2">
+            <Button
+              size="icon"
+              className="bg-theme/20 text-theme hover:bg-theme/30"
+            >
+              <Pencil className="h-4 w-4" />
+            </Button>
+            <Button
+              size="icon"
+              className="bg-red-100 text-red-500 hover:bg-red-200"
+              onClick={openDeleteModal}
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          </div>
+        ),
+      },
     ];
 
+    const handleSearch = useCallback((query: string) => {
+      setSearchQuery(query);
+    }, []);
 
-    return (
-        <div className="p-4 sm:p-6">
-            <div className="flex justify-between items-center mb-3">
-                <h2 className="font-semibold text-xl sm:text-2xl mb-3">
-                    Class Management
-                </h2>
-                <div className="flex justify-center items-center gap-2">
-                    <Button className="flex justify-center items-center gap-1">
-                        <Printer />
-                        Print
-                    </Button>
-                    <Button
-                        className="flex justify-center items-center gap-1"
-                        onClick={openModal}
-                    >
-                        <Plus />
-                        Add Class
-                    </Button>
-                </div>
-            </div>
+    const handleSort = useCallback(() => {
+      if (!sortConfig.key) {
+        setSortConfig({ key: 'className', direction: 'asc' });
+      } else {
+        setSortConfig((prev) => ({
+          key: prev.key,
+          direction: prev.direction === 'asc' ? 'desc' : 'asc',
+        }));
+      }
+    }, [sortConfig]);
 
-            <AddClassModal closeModal={closeModal} isModalOpen={isModalOpen} />
 
-            <DeleteConfirmation isModalOpen={isDeleteModal} closeModal={closeDeleteModal} doSomething={() => {}} />
+  return (
+    <div className="p-4 sm:p-6">
+      <PageHeader
+        title="Class Management"
+        rightButtons={
+          <div className="flex justify-center items-center gap-2">
+            <Button variant={'white'}>
+              <Download />
+              Export & Print
+            </Button>
+            <Button variant={'theme'} onClick={() => openModal()}>
+              <PlusCircle />
+              Add Class
+            </Button>
+          </div>
+        }
+        leftContent={
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink>
+                  <Link to="/">Dashboard</Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbLink>
+                  <Link to="/components">Components</Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>Breadcrumb</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        }
+      />
 
-            <Table data={data} columns={columns} itemsPerPage={20} />
-        </div>
-    );
+      <AddClassModal closeModal={closeModal} isModalOpen={isModalOpen} />
+
+      <DeleteConfirmation
+        isModalOpen={isDeleteModal}
+        closeModal={closeDeleteModal}
+        doSomething={() => {}}
+      />
+
+      <div className='w-full bg-white shadow-sm p-3 rounded-md max-h-svh'>
+        <TableHeader
+          title="All Classes"
+          onSearch={handleSearch}
+          onSort={handleSort}
+        />
+        <BaseTable
+          data={data}
+          columns={columns}
+          selectable
+          onRowSelect={(selectedRows) => console.log('Selected:', selectedRows)}
+          pagination={{
+            currentPage: 1,
+            pageSize: 10,
+            totalItems: 50,
+            onPageChange: (page) => console.log('Page:', page),
+          }}
+          onSort={(column, direction) =>
+            console.log('Sort:', column, direction)
+          }
+        />
+      </div>
+    </div>
+  );
 };
 
 export default ClassManagement;

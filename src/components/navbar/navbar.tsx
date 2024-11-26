@@ -7,7 +7,7 @@ import { ModeToggle } from './ThemeSwitcher';
 
 export const Navbar = () => {
   return (
-    <header className="flex h-16 justify-between items-center border-b px-4 bg-white dark:bg-gray-900 dark:border-gray-800">
+    <header className="flex h-[79px] justify-between items-center border-b px-4 bg-white dark:bg-gray-900 dark:border-gray-800">
       {/* Left Section */}
       <div className="flex justify-start items-center gap-2">
         <SidebarTrigger size="lg" />

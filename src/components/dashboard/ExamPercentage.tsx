@@ -55,7 +55,7 @@ export function ExamsPercentage() {
         <div className="flex flex-col items-center">
           <div className="w-60 h-48 relative">
             <Doughnut data={chartData} options={chartOptions} />
-            <div className="absolute top-24 left-11 flex flex-col items-center justify-center">
+            <div className="absolute top-24 left-10 flex flex-col items-center justify-center">
               <p className="text-sm text-gray-500 dark:text-gray-400">
                 Total Percentage
               </p>

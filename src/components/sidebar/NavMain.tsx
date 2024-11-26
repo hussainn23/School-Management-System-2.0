@@ -82,14 +82,14 @@ export function NavMain({ items }: { items: NavItem[] }) {
                   isActive={isActive(item.url) || isSubmenuActive(item)}
                   className={`w-full ${
                     isActive(item.url) || isSubmenuActive(item)
-                      ? 'bg-sidebar-accent text-sidebar-accent-fg'
+                      ? 'bg-theme text-white'
                       : ''
                   } `}
                 >
                   {item.items ? (
                     <div className="flex items-center w-full justify-start group-data-[collapsible=icon]:justify-center">
                       {item.icon && (
-                        <item.icon className=" h-5 w-5 min-w-[1.25rem] group-data-[collapsible=icon]:mr-0 group-data-[collapsible=icon]:h-6 group-data-[collapsible=icon]:w-6" />
+                        <item.icon className="h-4 w-4 min-w-[1.1rem] group-data-[collapsible=icon]:mr-0 group-data-[collapsible=icon]:h-6 group-data-[collapsible=icon]:w-6" />
                       )}
                       <span className="ml-5 group-data-[collapsible=icon]:hidden">
                         {item.title}
@@ -102,7 +102,7 @@ export function NavMain({ items }: { items: NavItem[] }) {
                       className="flex items-center w-full group-data-[collapsible=icon]:justify-center"
                     >
                       {item.icon && (
-                        <item.icon className="h-5 w-5 min-w-[1.25rem] group-data-[collapsible=icon]:h-6 group-data-[collapsible=icon]:w-6" />
+                        <item.icon className="h-4 w-4 min-w-[1.1rem] group-data-[collapsible=icon]:h-6 group-data-[collapsible=icon]:w-6" />
                       )}
                       <span className="ml-3 group-data-[collapsible=icon]:hidden">
                         {item.title}
@@ -112,7 +112,7 @@ export function NavMain({ items }: { items: NavItem[] }) {
                 </SidebarMenuButton>
               </CollapsibleTrigger>
               {item.items && (
-                <CollapsibleContent>
+                <CollapsibleContent >
                   <SidebarMenuSub>
                     {item.items.map((subItem) => (
                       <SidebarMenuSubItem key={subItem.title}>
@@ -124,6 +124,7 @@ export function NavMain({ items }: { items: NavItem[] }) {
                               ? 'bg-sidebar-accent text-sidebar-accent-fg'
                               : ''
                           }
+                          size='sm'
                         >
                           <Link
                             to={subItem.url}

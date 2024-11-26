@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import {
   Table,
   TableBody,
@@ -6,155 +5,151 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '../ui/table';
-
+} from '@/components/ui/table';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
-import {
-  ChevronDown,
-  ChevronUp,
-  ChevronsUpDown,
-  ChevronLeft,
-  ChevronRight,
-} from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { TableProps } from '@/types/table';
+import { useState } from 'react';
+import { cn } from '@/lib/utils';
 
-interface Column<T> {
-  key: string | number;
-  header: string;
-  render?: (item: T) => React.ReactNode;
-  sortable?: boolean;
-}
-
-interface ReusableTableProps<T extends Record<string, unknown>> {
-  // Added constraint
-  data: T[];
-  columns: Column<T>[];
-  itemsPerPage?: number;
-}
-
-export default function ReusableTable<T extends Record<string, unknown>>({
+export function BaseTable<T extends { id: string | number }>({
   data,
   columns,
-  itemsPerPage = 10,
-}: ReusableTableProps<T>) {
-  const [sortConfig, setSortConfig] = useState<{
-    key: keyof T;
-    direction: 'asc' | 'desc';
-  } | null>(null);
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const sortedData = React.useMemo(() => {
-    const sortableItems = [...data];
-    if (sortConfig !== null) {
-      sortableItems.sort((a, b) => {
-        if (
-          typeof a[sortConfig.key] !== 'number' ||
-          typeof b[sortConfig.key] !== 'number'
-        ) {
-          throw new Error(`Invalid comparison for key`);
-        }
-
-        const compareA = Number(a[sortConfig.key]);
-        const compareB = Number(b[sortConfig.key]);
-
-        if (compareA < compareB) {
-          return sortConfig.direction === 'asc' ? -1 : 1;
-        }
-        if (compareA > compareB) {
-          return sortConfig.direction === 'asc' ? 1 : -1;
-        }
-        return 0;
-      });
-    }
-    return sortableItems;
-  }, [data, sortConfig]);
-
-  // Pagination logic
-  const pageCount = Math.ceil(sortedData.length / itemsPerPage);
-  const paginatedData = sortedData.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+  selectable = true,
+  onRowSelect,
+  pagination,
+  onSort,
+}: TableProps<T>) {
+  const [selectedRows, setSelectedRows] = useState<Set<string | number>>(
+    new Set()
   );
+  const [sortConfig, setSortConfig] = useState<{
+    key: keyof T | null;
+    direction: 'asc' | 'desc';
+  }>({ key: null, direction: 'asc' });
 
-  const requestSort = (key: keyof T) => {
-    let direction: 'asc' | 'desc' = 'asc';
-    if (
-      sortConfig &&
-      sortConfig.key === key &&
-      sortConfig.direction === 'asc'
-    ) {
-      direction = 'desc';
+  const handleSelectAll = (checked: boolean) => {
+    const newSelected = checked
+      ? new Set(data.map((row) => row.id))
+      : new Set<string | number>();
+    setSelectedRows(newSelected);
+    onRowSelect?.(data.filter((row) => newSelected.has(row.id)));
+  };
+
+  const handleSelectRow = (id: string | number, checked: boolean) => {
+    const newSelected = new Set(selectedRows);
+    if (checked) {
+      newSelected.add(id);
+    } else {
+      newSelected.delete(id);
     }
-    setSortConfig({ key, direction });
+    setSelectedRows(newSelected);
+    onRowSelect?.(data.filter((row) => newSelected.has(row.id)));
+  };
+
+  const handleSort = (column: keyof T) => {
+    const direction =
+      sortConfig.key === column && sortConfig.direction === 'asc'
+        ? 'desc'
+        : 'asc';
+    setSortConfig({ key: column, direction });
+    onSort?.(column, direction);
   };
 
   return (
-    <div className="2xl:w-full overflow-x-auto rounded-md shadow">
-      <div className="rounded-md border overflow-x-auto">
-        <Table>
-          <TableHeader>
-            <TableRow>
+    <div className="w-full">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            {selectable && (
+              <TableHead className="w-12">
+                <Checkbox
+                  checked={selectedRows.size === data.length}
+                  onCheckedChange={(checked) =>
+                    handleSelectAll(checked === true)
+                  }
+                />
+              </TableHead>
+            )}
+            {columns.map((column) => (
+              <TableHead
+                key={String(column.accessorKey)}
+                className={cn('cursor-pointer', column.className)}
+                onClick={() => handleSort(column.accessorKey)}
+              >
+                {column.header}
+                {sortConfig.key === column.accessorKey && (
+                  <span className="ml-2">
+                    {sortConfig.direction === 'asc' ? '↑' : '↓'}
+                  </span>
+                )}
+              </TableHead>
+            ))}
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {data.map((row) => (
+            <TableRow key={row.id}>
+              {selectable && (
+                <TableCell>
+                  <Checkbox
+                    checked={selectedRows.has(row.id)}
+                    onCheckedChange={(checked) =>
+                      handleSelectRow(row.id, checked === true)
+                    }
+                  />
+                </TableCell>
+              )}
               {columns.map((column) => (
-                <TableHead key={column.key} className="text-xs md:text-sm">
-                  {column.sortable ? (
-                    <Button
-                      variant="ghost"
-                      size={'sm'}
-                      onClick={() => requestSort(column.key as keyof T)}
-                      className="hover:bg-transparent text-xs md:text-sm"
-                    >
-                      {column.header}
-                      {sortConfig?.key === column.key ? (
-                        sortConfig.direction === 'asc' ? (
-                          <ChevronUp className="ml-2 h-4 w-4" />
-                        ) : (
-                          <ChevronDown className="ml-2 h-4 w-4" />
-                        )
-                      ) : (
-                        <ChevronsUpDown className="ml-2 h-4 w-4" />
-                      )}
-                    </Button>
-                  ) : (
-                    column.header
-                  )}
-                </TableHead>
+                <TableCell key={String(column.accessorKey)}>
+                  {column.cell
+                    ? column.cell(row)
+                    : String(row[column.accessorKey])}
+                </TableCell>
               ))}
             </TableRow>
-          </TableHeader>
-          <TableBody className="text-xs md:text-sm">
-            {paginatedData.map((item, index) => (
-              <TableRow key={index}>
-                {columns.map((column) => (
-                  <TableCell key={column.key}>
-                    {column.render ? column.render(item) : (item[column.key] as React.ReactNode)}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-          disabled={currentPage === 1}
-        >
-          <ChevronLeft className="h-4 w-4" />
-          Previous
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() =>
-            setCurrentPage((prev) => Math.min(prev + 1, pageCount))
-          }
-          disabled={currentPage === pageCount}
-        >
-          Next
-          <ChevronRight className="h-4 w-4" />
-        </Button>
-      </div>
+          ))}
+        </TableBody>
+      </Table>
+
+      {pagination && (
+        <div className="flex items-center justify-between px-2 py-4">
+          <p className="text-sm text-muted-foreground">
+            Showing {(pagination.currentPage - 1) * pagination.pageSize + 1} to{' '}
+            {Math.min(
+              pagination.currentPage * pagination.pageSize,
+              pagination.totalItems
+            )}{' '}
+            of {pagination.totalItems} entries
+          </p>
+          <div className="flex items-center space-x-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() =>
+                pagination.onPageChange(pagination.currentPage - 1)
+              }
+              disabled={pagination.currentPage === 1}
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() =>
+                pagination.onPageChange(pagination.currentPage + 1)
+              }
+              disabled={
+                pagination.currentPage * pagination.pageSize >=
+                pagination.totalItems
+              }
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

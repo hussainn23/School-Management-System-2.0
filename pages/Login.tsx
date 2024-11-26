@@ -3,9 +3,35 @@ import { Input } from '../src/components/ui/input';
 import { Button } from '../src/components/ui/button';
 import { Checkbox } from '../src/components/ui/checkbox';
 import { Eye, EyeOff } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/hooks/useAuth';
+import { toast } from 'sonner';
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
+
+  const { login, isLoading, error } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
+
+    login(
+      { email, password },
+      {
+        onSuccess: () => {
+          navigate('/');
+        },
+      }
+    );
+
+    error && 
+        toast.error(error?.message || "An unknown error occured")
+
+  };
 
   return (
     <div className="flex min-h-screen justify-center items-center bg-[url('/loginBackground.svg')] bg-cover bg-center">
@@ -41,14 +67,15 @@ export default function Login() {
               </p>
             </div>
 
-            <form className="space-y-6">
+            <form className="space-y-6" onSubmit={handleSubmit}>
               <div className="space-y-2">
-                <label className="text-sm font-medium" htmlFor="username">
-                  User Name
+                <label className="text-sm font-medium" htmlFor="email">
+                  Email
                 </label>
                 <Input
-                  id="username"
-                  placeholder="Enter User Name"
+                  id="email"
+                  name='email'
+                  placeholder="Enter email"
                   className="h-12"
                 />
               </div>
@@ -68,6 +95,7 @@ export default function Login() {
                 <div className="relative">
                   <Input
                     id="password"
+                    name='password'
                     type={showPassword ? 'text' : 'password'}
                     placeholder="password"
                     className="h-12 pr-10"
@@ -100,8 +128,8 @@ export default function Login() {
                 </label>
               </div>
 
-              <Button type='button' className="w-full h-12 bg-theme hover:bg-theme/90 text-white">
-                Sign In
+              <Button type='submit' className="w-full h-12 bg-theme hover:bg-theme/90 text-white" disabled={isLoading}>
+                {isLoading ? 'Signing in ....' :  'Sign In'}
               </Button>
             </form>
           </div>

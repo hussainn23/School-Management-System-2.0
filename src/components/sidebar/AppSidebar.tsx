@@ -19,7 +19,6 @@ import {
   SidebarRail,
 } from '@/components/ui/sidebar';
 
-
 const data = {
   user: {
     name: 'John Doe',
@@ -30,13 +29,13 @@ const data = {
     {
       title: 'Dashboard',
       url: '/',
-      icon: LayoutDashboard,
+      icon: Home,
       isActive: true,
     },
     {
       title: 'Admin',
       url: '/admin',
-      icon: Users,
+      icon: LayoutDashboard,
       items: [
         { title: 'Class Management', url: '/admin/class-management' },
         { title: 'Section Management', url: '/admin/section-management' },
@@ -83,20 +82,25 @@ const data = {
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader>
-        <div className="flex items-center justify-center p-4">
+      <SidebarHeader className="mb-2 border-b group-data-[collapsible=icon]:border-0">
+        <div className="flex items-center justify-center w-full">
           <img
             src="/main-logo.svg"
             alt="Logo"
-            className="w-40 h-auto group-data-[collapsible=icon]:w-8 transition-all duration-300 ease-in-out"
+            className="w-40 h-auto group-data-[collapsible=icon]:hidden transition-all duration-300 ease-in-out p-3"
+          />
+          <img
+            src="/logo.svg"
+            alt="Logo"
+            className="w-full h-full group-data-[collapsible=icon]:block hidden transition-all duration-300 ease-in-out p-1"
           />
         </div>
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
       </SidebarContent>
-      <SidebarFooter>
-        <NavBottom user={data.user} />
+      <SidebarFooter className="group-data-[collapsible=icon]:hidden">
+        <NavBottom />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
