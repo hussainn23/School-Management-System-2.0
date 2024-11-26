@@ -3,6 +3,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 const CombinedChart = lazy(() => import('../../charts/AccountChart'));
@@ -24,12 +25,19 @@ export function Accounts() {
           <DropdownMenuTrigger className="flex gap-1 text-sm text-gray-500 dark:text-gray-300">
             Sort By <ChevronDown size={20} />
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="bg-white dark:bg-gray-800">
-            <DropdownMenuItem className="dark:text-gray-200">
-              Ascending
+          <DropdownMenuContent className="bg-white dark:bg-gray-800 p-2">
+            <DropdownMenuLabel>Sort By</DropdownMenuLabel>
+            <DropdownMenuItem className="dark:text-gray-200 px-2">
+              Newly added
             </DropdownMenuItem>
-            <DropdownMenuItem className="dark:text-gray-200">
-              Descending
+            <DropdownMenuItem className="dark:text-gray-200 px-2">
+              Last 3 months
+            </DropdownMenuItem>
+            <DropdownMenuItem className="dark:text-gray-200 px-2">
+              Last 6 months
+            </DropdownMenuItem>
+            <DropdownMenuItem className="dark:text-gray-200 px-2">
+              Last 1 year
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

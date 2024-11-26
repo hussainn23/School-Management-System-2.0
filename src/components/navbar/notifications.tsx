@@ -1,6 +1,7 @@
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { Button } from '../ui/button';
 import { Bell } from 'lucide-react';
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 
 export const Notifications = () => {
   return (
@@ -20,20 +21,45 @@ export const Notifications = () => {
         align="center"
         className="flex flex-col bg-white dark:bg-gray-900 dark:border-gray-700"
       >
-        <h3 className="text-gray-700 dark:text-gray-300 font-semibold text-center">
-          Notifications
-        </h3>
-        <div className="flex flex-col gap-2 p-2 mt-3 shadow-sm border-b dark:border-gray-800">
-          <span className="font-medium text-sm text-gray-900 dark:text-gray-300">
-            🌝 First notification
+        <div className="flex justify-between items-center w-full">
+          <h3 className="text-gray-700 dark:text-gray-300 font-semibold text-center">
+            Notifications
+          </h3>
+          <span className="text-xs p-1 bg-orange-100 text-orange-600 rounded-md font-medium">
+            15 unread
           </span>
-          <p className="text-xs font-normal text-muted-foreground dark:text-gray-400 leading-3">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat,
-            quasi!
-          </p>
-          <span className="text-sm text-gray-400 dark:text-gray-500">
-            JAN 13, 2022
-          </span>
+        </div>
+        <div className='flex flex-col gap-1 mt-5'>
+            <div className="flex flex-row  gap-2 items-start py-2 border-b cursor-pointer">
+            <Avatar className="w-7 h-7">
+                <AvatarImage src="https://github.com/shadcn.png" />
+                <AvatarFallback>JM</AvatarFallback>
+            </Avatar>
+            <div className="flex flex-col gap-1 overflow-hidden">
+                <span className="font-semibold text-sm text-gray-900 dark:text-gray-300">
+                First notification
+                </span>
+                <p className="text-xs font-normal text-muted-foreground dark:text-gray-400 leading-3 truncate overflow-hidden">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat,
+                quasi!
+                </p>
+            </div>
+            </div>
+            <div className="flex flex-row  gap-2 items-start py-2 border-b cursor-pointer">
+            <Avatar className="w-7 h-7">
+                <AvatarImage src="https://github.com/shadcn.png" />
+                <AvatarFallback>JM</AvatarFallback>
+            </Avatar>
+            <div className="flex flex-col gap-1 overflow-hidden">
+                <span className="font-semibold text-sm text-gray-900 dark:text-gray-300">
+                First notification
+                </span>
+                <p className="text-xs font-normal text-muted-foreground dark:text-gray-400 leading-3 truncate overflow-hidden">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat,
+                quasi!
+                </p>
+            </div>
+            </div>
         </div>
       </PopoverContent>
     </Popover>
