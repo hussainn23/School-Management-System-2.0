@@ -36,7 +36,6 @@ export const useAuth = () => {
   );
 
   const logoutMutation = useMutation(async () => {
-    // Implement logout API call if needed
     logout();
   });
 

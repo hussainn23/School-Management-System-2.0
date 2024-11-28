@@ -37,8 +37,8 @@ const DeleteConfirmation = ({
             </Button>
           </AlertDialogCancel>
           <AlertDialogAction asChild>
-            <Button variant="default" onClick={doSomething}>
-              Proceed
+            <Button className='bg-red-500 text-white hover:bg-red-600' onClick={doSomething}>
+              Delete 
             </Button>
           </AlertDialogAction>
         </AlertDialogFooter>

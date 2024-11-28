@@ -1,120 +1,180 @@
-import { BaseTable } from '../src/components/common/Table';
-import { Button } from '../src/components/ui/button';
-import { Download, PlusCircle, Pencil, Trash2 } from 'lucide-react';
-import { useCallback, useState } from 'react';
-import AddClassModal from '@/components/class-management/AddClass';
+import { Button } from '@/components/ui/button';
+import {
+  Download,
+  PlusCircle,
+  Trash2,
+  ChevronLeft,
+  ChevronRight,
+  PencilLine,
+} from 'lucide-react';
+import { useState } from 'react';
+import ClassFormModal from '@/components/class-management/ClassFormModal';
 import DeleteConfirmation from '@/components/common/DeleteConfirmation';
 import { PageHeader } from '@/components/common/PageHeader';
 import {
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
-import { Link } from 'react-router-dom';
-import { StatusBadge } from '@/components/ui/status-badge';
-import { TableHeader } from '@/components/common/TableHeader';
+import { TableHeader as TableTopHeader } from '@/components/common/TableHeader';
+import { fetchClasses, deleteClass } from '@/services/classService';
+import { useQuery, useQueryClient, useMutation } from 'react-query';
+import { Skeleton } from '@/components/ui/skeleton';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+} from '@/components/ui/table';
+import { toast } from 'sonner';
 
 interface ClassData {
   id: string;
-  className: string;
+  name: string;
   description: string;
-  status: 'top-scored' | 'poor-results' | 'moderate';
-  createdDate: string;
+  status: string;
+  created_at: string;
 }
 
 const ClassManagement = () => {
+  const queryClient = useQueryClient();
+  const { data, isLoading, isError, error } = useQuery<ClassData[], Error>(
+    ['classes'],
+    fetchClasses
+  );
+  const [allSelected, setAllSelected] = useState(false);
+  const [selectedClasses, setSelectedClasses] = useState<string[]>([]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
-
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
-
-  const openDeleteModal = () => setIsDeleteModal(true);
-  const closeDeleteModal = () => setIsDeleteModal(false);
-
-
-
-
-
-  
+  const [classToDelete, setClassToDelete] = useState<string | null>(null);
+  const [classToEdit, setClassToEdit] = useState<ClassData | null>(null);
 
   const [searchQuery, setSearchQuery] = useState('');
-  const [sortConfig, setSortConfig] = useState<{
-      key: keyof ClassData | null;
-      direction: 'asc' | 'desc';
-    }>({ key: null, direction: 'asc' });
-    const [data, setData] = useState<ClassData[]>([
-      {
-        id: '1',
-        className: '9th',
-        description:
-          'Lorem ipsum is a dummy text and a dummy filler to replace the dummy lines in the place of dumm.',
-        status: 'top-scored',
-        createdDate: '2024-05-21',
-      },
-    ]);
+
+  const deleteMutation = useMutation(deleteClass, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['classes']);
+      toast.success('Class deleted successfully');
+    },
+    onError: (error) => {
+      toast.error(`Error deleting class: ${error}`);
+    },
+  });
+
+  const openModal = (classData?: ClassData) => {
+    setClassToEdit(classData || null);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setClassToEdit(null);
+  };
+
+  const openDeleteModal = (id: string) => {
+    setClassToDelete(id);
+    setIsDeleteModal(true);
+  };
+
+  const closeDeleteModal = () => {
+    setIsDeleteModal(false);
+    setClassToDelete(null);
+  };
+
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+  };
+
+  const handleDelete = async (id: string) => {
+    openDeleteModal(id);
+  };
+
+  const confirmDelete = async () => {
+    if (classToDelete) {
+      deleteMutation.mutate(classToDelete);
+      closeDeleteModal();
+    }
+  };
+
+  const filteredData = data?.filter((row) =>
+    row.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
 
-    const columns = [
-      {
-        header: 'Class Name',
-        accessorKey: 'className' as const,
-      },
-      {
-        header: 'Description',
-        accessorKey: 'description' as const,
-      },
-      {
-        header: 'Status',
-        accessorKey: 'status' as const,
-        cell: (row: ClassData) => <StatusBadge status={row.status} />,
-      },
-      {
-        header: 'Created Date',
-        accessorKey: 'createdDate' as const,
-      },
-      {
-        header: 'Action',
-        accessorKey: 'id' as const,
-        cell: (row: ClassData) => (
-          <div className="flex gap-2">
-            <Button
-              size="icon"
-              className="bg-theme/20 text-theme hover:bg-theme/30"
-            >
-              <Pencil className="h-4 w-4" />
-            </Button>
-            <Button
-              size="icon"
-              className="bg-red-100 text-red-500 hover:bg-red-200"
-              onClick={openDeleteModal}
-            >
-              <Trash2 className="h-4 w-4" />
-            </Button>
-          </div>
-        ),
-      },
-    ];
+  const handleSelectAll = () => {
+    if (allSelected) {
+      setSelectedClasses([]);
+    } else {
+      setSelectedClasses(data?.map((row) => row.id) || []);
+    }
+    setAllSelected(!allSelected);
+  };
 
-    const handleSearch = useCallback((query: string) => {
-      setSearchQuery(query);
-    }, []);
+  const handleSelectSingle = (id: string) => {
+    if (selectedClasses.includes(id)) {
+      setSelectedClasses(selectedClasses.filter((item) => item !== id));
+    } else {
+      setSelectedClasses([...selectedClasses, id]);
+    }
+  };
 
-    const handleSort = useCallback(() => {
-      if (!sortConfig.key) {
-        setSortConfig({ key: 'className', direction: 'asc' });
-      } else {
-        setSortConfig((prev) => ({
-          key: prev.key,
-          direction: prev.direction === 'asc' ? 'desc' : 'asc',
-        }));
-      }
-    }, [sortConfig]);
+  if (isLoading) {
+    return (
+      <div className="p-4 sm:p-6">
+        <PageHeader
+          title="Class Management"
+          rightButtons={
+            <div className="flex justify-center items-center gap-2">
+              <Button variant="outline">
+                <Download className="mr-2 h-4 w-4" />
+                Export & Print
+              </Button>
+              <Button onClick={() => openModal()}>
+                <PlusCircle className="mr-2 h-4 w-4" />
+                Add Class
+              </Button>
+            </div>
+          }
+          leftContent={
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>Dashboard</BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>Components</BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Breadcrumb</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          }
+        />
 
+        <div className="w-full bg-white dark:bg-gray-800 shadow-sm p-3 rounded-md max-h-svh">
+          <TableTopHeader
+            title="All Classes"
+            onSearch={handleSearch}
+            onSort={() => {}}
+          />
+          <Skeleton className="h-8 mb-2" />
+          <Skeleton className="h-6 mb-4" />
+          <Skeleton className="h-6 mb-4" />
+        </div>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div>
+        Error: {error instanceof Error ? error.message : 'Unknown error'}
+      </div>
+    );
+  }
 
   return (
     <div className="p-4 sm:p-6">
@@ -122,12 +182,12 @@ const ClassManagement = () => {
         title="Class Management"
         rightButtons={
           <div className="flex justify-center items-center gap-2">
-            <Button variant={'white'}>
-              <Download />
+            <Button variant="outline">
+              <Download className="mr-2 h-4 w-4" />
               Export & Print
             </Button>
-            <Button variant={'theme'} onClick={() => openModal()}>
-              <PlusCircle />
+            <Button onClick={() => openModal()} variant={'theme'}>
+              <PlusCircle className="mr-2 h-4 w-4" />
               Add Class
             </Button>
           </div>
@@ -135,55 +195,100 @@ const ClassManagement = () => {
         leftContent={
           <Breadcrumb>
             <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink>
-                  <Link to="/">Dashboard</Link>
-                </BreadcrumbLink>
-              </BreadcrumbItem>
+              <BreadcrumbItem>Admin</BreadcrumbItem>
               <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink>
-                  <Link to="/components">Components</Link>
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Breadcrumb</BreadcrumbPage>
-              </BreadcrumbItem>
+              <BreadcrumbItem>Class Management</BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
         }
       />
 
-      <AddClassModal closeModal={closeModal} isModalOpen={isModalOpen} />
+      <ClassFormModal
+        closeModal={closeModal}
+        isModalOpen={isModalOpen}
+        classData={classToEdit}
+      />
 
       <DeleteConfirmation
         isModalOpen={isDeleteModal}
         closeModal={closeDeleteModal}
-        doSomething={() => {}}
+        doSomething={confirmDelete}
       />
 
-      <div className='w-full bg-white shadow-sm p-3 rounded-md max-h-svh'>
-        <TableHeader
+      <div className="w-full bg-white dark:bg-gray-800 shadow-sm p-3 rounded-md max-h-svh">
+        <TableTopHeader
           title="All Classes"
           onSearch={handleSearch}
-          onSort={handleSort}
+          onSort={() => {}}
         />
-        <BaseTable
-          data={data}
-          columns={columns}
-          selectable
-          onRowSelect={(selectedRows) => console.log('Selected:', selectedRows)}
-          pagination={{
-            currentPage: 1,
-            pageSize: 10,
-            totalItems: 50,
-            onPageChange: (page) => console.log('Page:', page),
-          }}
-          onSort={(column, direction) =>
-            console.log('Sort:', column, direction)
-          }
-        />
+        <div className="w-full">
+          <Table>
+            <TableRow>
+              <TableHead className="w-12">
+                <input
+                  type="checkbox"
+                  checked={allSelected}
+                  onChange={handleSelectAll}
+                />
+              </TableHead>
+              <TableHead>Class Name</TableHead>
+              <TableHead>Description</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Created At</TableHead>
+              <TableHead>Actions</TableHead>
+            </TableRow>
+            <TableBody>
+              {filteredData?.map((row) => (
+                <TableRow key={row.id}>
+                  <TableCell>
+                    <input
+                      type="checkbox"
+                      checked={selectedClasses.includes(row.id)}
+                      onChange={() => handleSelectSingle(row.id)}
+                    />
+                  </TableCell>
+                  <TableCell>{row.name}</TableCell>
+                  <TableCell>{row.description}</TableCell>
+                  <TableCell>{row.status}</TableCell>
+                  <TableCell>
+                    {new Date(row.created_at).toISOString().split('T')[0]}
+                  </TableCell>
+                  <TableCell className="flex justify-start items-center gap-2">
+                    <Button
+                      size={'sm'}
+                      className="bg-theme/10 text-theme hover:bg-theme/30 dark:bg-theme/30 dark:text-white"
+                      onClick={() => openModal(row)}
+                    >
+                      <PencilLine size={30} />
+                    </Button>
+                    <Button
+                      size={'sm'}
+                      className="bg-red-200 text-red-600 hover:bg-red-300 dark:bg-red-400 dark:text-red-700"
+                      onClick={() => handleDelete(row.id)}
+                    >
+                      <Trash2 />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+
+          <div className="flex items-center justify-between px-2 py-4">
+            <p className="text-sm text-muted-foreground">
+              Showing {filteredData?.length ?? 0} of {filteredData?.length ?? 0}{' '}
+              entries
+            </p>
+            <div className="flex items-center space-x-2">
+              <Button variant="outline" size="sm" disabled>
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+              <Button variant="outline" size="sm" disabled>
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

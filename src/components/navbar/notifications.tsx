@@ -2,6 +2,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { Button } from '../ui/button';
 import { Bell } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import { Link } from 'react-router-dom';
 
 export const Notifications = () => {
   return (
@@ -30,7 +31,7 @@ export const Notifications = () => {
           </span>
         </div>
         <div className='flex flex-col gap-1 mt-5'>
-            <div className="flex flex-row  gap-2 items-start py-2 border-b cursor-pointer">
+            <div className="flex flex-row  gap-2 items-center py-2 border-b cursor-pointer">
             <Avatar className="w-7 h-7">
                 <AvatarImage src="https://github.com/shadcn.png" />
                 <AvatarFallback>JM</AvatarFallback>
@@ -45,7 +46,7 @@ export const Notifications = () => {
                 </p>
             </div>
             </div>
-            <div className="flex flex-row  gap-2 items-start py-2 border-b cursor-pointer">
+            <div className="flex flex-row  gap-2 items-center py-2 border-b cursor-pointer">
             <Avatar className="w-7 h-7">
                 <AvatarImage src="https://github.com/shadcn.png" />
                 <AvatarFallback>JM</AvatarFallback>
@@ -60,7 +61,10 @@ export const Notifications = () => {
                 </p>
             </div>
             </div>
-        </div>
+        </div> 
+        <Link to={'#'} className='text-center mt-5 underline text-theme'>
+            View All
+        </Link>
       </PopoverContent>
     </Popover>
   );

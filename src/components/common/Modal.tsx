@@ -1,8 +1,6 @@
-import { Button } from '../ui/button';
 import {
     Dialog,
     DialogContent,
-    DialogFooter,
     DialogTitle,
 } from '../ui/dialog';
 
@@ -11,10 +9,9 @@ interface ModalProps {
     title: string;
     isOpen: boolean;
     closeModal: () => void;
-    doSomething: ()=> void;
 }
 
-export const Modal = ({ children, title, isOpen, closeModal,doSomething }: ModalProps) => {
+export const Modal = ({ children, title, isOpen, closeModal }: ModalProps) => {
     return (
         <Dialog open={isOpen} onOpenChange={closeModal}>
             <DialogContent className='max-w-[500px] overflow-y-auto'>
@@ -22,14 +19,6 @@ export const Modal = ({ children, title, isOpen, closeModal,doSomething }: Modal
                     {title}
                 </DialogTitle>
                 <div>{children}</div>
-                <DialogFooter className="flex gap-2">
-                    <Button  onClick={doSomething}>
-                        Save 
-                    </Button>
-                    <Button variant="outline" onClick={closeModal}>
-                        Close
-                    </Button>
-                </DialogFooter>
             </DialogContent>
         </Dialog>
     );

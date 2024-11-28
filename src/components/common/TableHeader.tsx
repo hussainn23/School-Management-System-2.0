@@ -24,9 +24,9 @@ export function TableHeader({ title, onSearch, onSort, rightContent }: TableHead
         <div className="relative">
           <Search className="absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
-            size={7}
+            size={8}
             placeholder="Search here ..."
-            className="pl-8"
+            className="pl-8 dark:bg-gray-700"
             onChange={(e) => onSearch(e.target.value)}
           />
         </div>

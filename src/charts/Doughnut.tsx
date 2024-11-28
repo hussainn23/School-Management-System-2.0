@@ -47,6 +47,8 @@ const DoughnutChart: React.FC<DoughnutChartProps> = ({
         alignItems: 'center',
         padding: '1rem',
         borderRadius: '8px',
+        marginLeft: 'auto',
+        marginRight: 'auto'
       }}
     >
       <Doughnut data={data} options={options} />

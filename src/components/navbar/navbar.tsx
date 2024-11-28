@@ -1,9 +1,11 @@
-import { Fullscreen, LanguagesIcon, Search, Settings } from 'lucide-react';
+import { Fullscreen, Settings } from 'lucide-react';
 import { Button } from '../ui/button';
 import { SidebarTrigger } from '../ui/sidebar';
 import { Notifications } from './notifications';
 import { UserButton } from './user-button';
 import { ModeToggle } from './ThemeSwitcher';
+import { LanguageDropdown } from './language';
+import { SearchDropdown } from './search';
 
 export const Navbar = () => {
   return (
@@ -14,14 +16,10 @@ export const Navbar = () => {
       </div>
       {/* Center Section */}
       <div className="flex justify-center items-center gap-5">
-        {/* Search Icon */}
-        <span className="text-muted-foreground text-sm hidden md:flex dark:text-gray-400">
-          <Search />
-        </span>
-        {/* Languages Icon */}
-        <span className="text-muted-foreground text-sm hidden md:flex dark:text-gray-400">
-          <LanguagesIcon />
-        </span>
+        {/* Search dropdown */}
+        <SearchDropdown />
+        {/* Languages dropdown */}
+        <LanguageDropdown />
         {/* Theme Toggle */}
         <ModeToggle />
         {/* Notifications */}

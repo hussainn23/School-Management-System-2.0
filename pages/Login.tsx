@@ -35,7 +35,7 @@ export default function Login() {
 
   return (
     <div className="flex min-h-screen justify-center items-center bg-[url('/loginBackground.svg')] bg-cover bg-center">
-      <div className="flex flex-row justify-between lg:min-w-[1280px] shadow-xl shadow-muted-foreground">
+      <div className="flex flex-row justify-between lg:min-w-[1280px] shadow-xl shadow-muted-foreground dark:shadow-gray-900">
         <div className="hidden lg:block lg:w-1/2 bg-theme relative overflow-hidden rounded-sm">
           <img
             src="/login-wrapper-bg.svg"
@@ -57,7 +57,7 @@ export default function Login() {
         </div>
 
         {/* Right Section */}
-        <div className="w-full flex items-center justify-center p-8 lg:w-1/2 bg-white rounded-sm">
+        <div className="w-full flex items-center justify-center p-8 lg:w-1/2 bg-white dark:bg-gray-800 rounded-sm">
           <div className="w-[70%] space-y-8 mx-auto">
             <div className="flex flex-col items-center">
               <img src="/logo.svg" alt="Smart School" className="h-12 mb-6" />
@@ -76,7 +76,7 @@ export default function Login() {
                   id="email"
                   name='email'
                   placeholder="Enter email"
-                  className="h-12"
+                  className="h-12 dark:bg-gray-700"
                 />
               </div>
 
@@ -98,7 +98,7 @@ export default function Login() {
                     name='password'
                     type={showPassword ? 'text' : 'password'}
                     placeholder="password"
-                    className="h-12 pr-10"
+                    className="h-12 pr-10 dark:bg-gray-700"
                   />
                   <button
                     type="button"
@@ -106,11 +106,11 @@ export default function Login() {
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
                   >
                     {showPassword ? (
-                        <div className='bg-theme/20 p-2 text-theme rounded-sm hover:bg-theme/10'>
+                        <div className='bg-theme/20 dark:bg-theme/30 p-2 text-theme dark:text-white rounded-sm hover:bg-theme/10'>
                             <EyeOff className="h-5 w-5" />
                         </div>
                     ) : (
-                        <div className='bg-theme/20 p-2 text-theme rounded-sm hover:bg-theme/10'>
+                        <div className='bg-theme/20 dark:bg-theme/30 p-2 text-theme dark:text-white rounded-sm hover:bg-theme/10'>
                             <Eye className="h-5 w-5" />
                         </div>
                     )}

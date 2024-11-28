@@ -16,7 +16,7 @@ import { cn } from '@/lib/utils';
 export function BaseTable<T extends { id: string | number }>({
   data,
   columns,
-  selectable = true,
+  selectable = false,
   onRowSelect,
   pagination,
   onSort,

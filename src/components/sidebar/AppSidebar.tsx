@@ -18,6 +18,7 @@ import {
   SidebarHeader,
   SidebarRail,
 } from '@/components/ui/sidebar';
+import { useTheme } from 'next-themes';
 
 const data = {
   user: {
@@ -80,12 +81,15 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+
+    const {theme} = useTheme()
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader className="mb-2 border-b group-data-[collapsible=icon]:border-0">
         <div className="flex items-center justify-center w-full">
           <img
-            src="/main-logo.svg"
+            src={theme === 'dark' ? '/login-image-logo.svg' : "/main-logo.svg"}
             alt="Logo"
             className="w-40 h-auto group-data-[collapsible=icon]:hidden transition-all duration-300 ease-in-out p-3"
           />
