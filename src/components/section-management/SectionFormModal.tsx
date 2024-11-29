@@ -7,14 +7,6 @@ import { DialogFooter } from '../ui/dialog';
 import { Button } from '../ui/button';
 import { toast } from 'sonner';
 import { useQueryClient, useMutation } from 'react-query';
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '../ui/select';
 
 interface SectionData {
   id: string;
@@ -40,8 +32,6 @@ const SectionFormModal = ({
   classes,
   teachers,
 }: SectionFormModalProps) => {
-
-
   const [sectionName, setSectionName] = useState('');
   const [description, setDescription] = useState('');
   const [classId, setClassId] = useState('');
@@ -135,55 +125,55 @@ const SectionFormModal = ({
           <label htmlFor="classname" className="text-sm text-muted-foreground">
             Class Name
           </label>
-          <Select value={classId} onValueChange={setClassId}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select a class" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                {classes?.map((cls) => (
-                  <SelectItem key={cls.id} value={cls.id}>
-                    {cls.name}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          <select
+            id="classname"
+            value={classId}
+            onChange={(e) => setClassId(e.target.value)}
+            className="w-full px-3 py-2 bg-background rounded-md border text-sm"
+            required
+          >
+            <option value="">Select a class</option>
+            {classes?.map((cls) => (
+              <option key={cls.id} value={cls.id}>
+                {cls.name}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="flex flex-col gap-1">
           <label htmlFor="medium" className="text-sm text-muted-foreground">
             Medium
           </label>
-          <Select value={medium} onValueChange={setMedium}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select a medium" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="english">English</SelectItem>
-                <SelectItem value="urdu">Urdu</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          <select
+            id="medium"
+            value={medium}
+            onChange={(e) => setMedium(e.target.value)}
+            className="w-full px-3 py-2 bg-background rounded-md border text-sm"
+            required
+          >
+            <option value="">Select a medium</option>
+            <option value="English">English</option>
+            <option value="Urdu">Urdu</option>
+          </select>
         </div>
         <div className="flex flex-col gap-1">
           <label htmlFor="teacher" className="text-sm text-muted-foreground">
             Teacher Incharge
           </label>
-          <Select value={teacherId} onValueChange={setTeacherId}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select a teacher" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                {teachers?.map((teacher: any) => (
-                  <SelectItem key={teacher.id} value={teacher.id}>
-                    {teacher?.user?.name}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          <select
+            id="teacher"
+            value={teacherId}
+            onChange={(e) => setTeacherId(e.target.value)}
+            className="w-full px-3 py-2 bg-background rounded-md border text-sm"
+            required
+          >
+            <option value="">Select a teacher</option>
+            {teachers?.map((teacher: any) => (
+              <option key={teacher.id} value={teacher.id}>
+                {teacher?.user?.name}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div className="flex flex-col gap-1">
@@ -191,6 +181,7 @@ const SectionFormModal = ({
             Section Name
           </label>
           <Input
+            id="section"
             placeholder="Section name"
             value={sectionName}
             onChange={(e) => setSectionName(e.target.value)}
@@ -206,6 +197,7 @@ const SectionFormModal = ({
             Description
           </label>
           <Textarea
+            id="description"
             placeholder="Description..."
             value={description}
             onChange={(e) => setDescription(e.target.value)}
@@ -225,8 +217,8 @@ const SectionFormModal = ({
           </Button>
           <Button
             type="submit"
-            variant={'theme'}
-            className="w-full"
+            variant="default"
+            className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
             disabled={isSubmitting}
           >
             {isSubmitting ? 'Processing...' : sectionData ? 'Update' : 'Add'}

@@ -7,7 +7,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
 } from '../src/components/ui/dropdown-menu';
-import Table from '../src/components/common/Table';
+// import Table from '../src/components/common/Table';
 import AddSubjectModal from '../src/components/subjectManagement/AddSubjectModal';
 import EditSubjectModal from '../src/components/subjectManagement/EditSubjectModal';
 import TimeTableModal from '../src/components/subjectManagement/TimeTableModal';
@@ -110,7 +110,7 @@ const SubjectManagement: React.FC = () => {
         </div>
       </div>
       {/* Render the Table */}
-      <Table data={data} columns={columns} itemsPerPage={20} />
+      {/* <Table data={data} columns={columns} itemsPerPage={20} /> */}
       {/* Add Subject Modal */}
       <AddSubjectModal
         isOpen={isAddModalOpen}

@@ -23,31 +23,36 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import { useMutation, useQueryClient } from 'react-query';
+import { addTeacher } from '@/services/teacherService';
+import { toast } from 'sonner';
 
 const formSchema = z.object({
-  firstName: z.string().min(2, 'First name must be at least 2 characters'),
-  lastName: z.string().min(2, 'Last name must be at least 2 characters'),
-  cnicNumber: z.string().min(13, 'CNIC must be 13 characters'),
-  dateOfBirth: z.string(),
+  name: z.string().min(2, 'Name must be at least 2 characters'),
+  username: z.string().min(2, 'Username must be at least 2 characters'),
+  cnic: z.string().min(13, 'CNIC must be 13 characters'),
+  dob: z.string(),
   gender: z.string(),
-  teacherId: z.string(),
-  maritalStatus: z.string(),
-  teacherStatus: z.string(),
-  homeAddress: z.string(),
+  teacher_reg_id: z.string(),
+  maritial_status: z.string(),
+  address: z.string(),
   city: z.string(),
-  stateProvince: z.string(),
-  postalCode: z.string(),
+  province: z.string(),
+  postal_code: z.string(),
   country: z.string(),
-  homePhone: z.string(),
-  mobilePhone: z.string(),
+  home_phone: z.string(),
+  phone: z.string(),
   email: z.string().email(),
-  emergencyContact: z.string(),
-  degreeProgram: z.string(),
+  password: z.string().min(8,'Minimum password length is 8 characters'),
+  password_confirmation: z.string(),
+  emergency_phone: z.string(),
+  degree: z.string(),
   experience: z.string(),
-  previousEmployment: z.string(),
-  accountName: z.string(),
-  accountNumber: z.string(),
-  roleInSystem: z.string(),
+  prev_employee_detail: z.string(),
+  bank_name: z.string(),
+  account_name: z.string(),
+  account_number: z.string(),
+  role: z.string(),
   picture: z.any().optional(),
 });
 
@@ -57,40 +62,62 @@ const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png'];
 
 export default function AddTeacher() {
 
+  const queryClient = useQueryClient()
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [isSubmitting,setIsSubmitting] = useState(false)
+
+
+  const addTeacherMutation = useMutation(addTeacher, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['teachers']);
+      toast.success('Teacher created successfully!');
+      form.reset();
+    },
+    onError: () => {
+      toast.error('Error creating teacher');
+    },
+    onSettled: () => {
+      setIsSubmitting(false);
+    },
+  });
+
+
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      firstName: '',
-      lastName: '',
-      cnicNumber: '',
-      dateOfBirth: '',
+      name: '',
+      username: '',
+      cnic: '',
+      dob: '',
       gender: '',
-      teacherId: '',
-      maritalStatus: '',
-      teacherStatus: '',
-      homeAddress: '',
+      teacher_reg_id: '',
+      maritial_status: '',
+      address: '',
       city: '',
-      stateProvince: '',
-      postalCode: '',
+      province: '',
+      postal_code: '',
       country: '',
-      homePhone: '',
-      mobilePhone: '',
+      home_phone: '',
+      phone: '',
       email: '',
-      emergencyContact: '',
-      degreeProgram: '',
+      password: '',
+      password_confirmation: '',
+      emergency_phone: '',
+      degree: '',
       experience: '',
-      previousEmployment: '',
-      accountName: '',
-      accountNumber: '',
-      roleInSystem: '',
+      prev_employee_detail: '',
+      bank_name: '',
+      account_name: '',
+      account_number: '',
+      role: '',
       picture: undefined
     },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    setIsSubmitting(true)
+    addTeacherMutation.mutate(values);
   }
 
    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -140,7 +167,7 @@ export default function AddTeacher() {
           >
             Discard
           </Button>
-          <Button onClick={form.handleSubmit(onSubmit)}>Save</Button>
+          <Button onClick={form.handleSubmit(onSubmit)} disabled={isSubmitting}>{ isSubmitting ? 'Saving ...'  : 'Save'}</Button>
         </div>
       </div>
 
@@ -157,12 +184,12 @@ export default function AddTeacher() {
                   <div className="space-y-6">
                     <FormField
                       control={form.control}
-                      name="firstName"
+                      name="name"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>First Name</FormLabel>
+                          <FormLabel>Name</FormLabel>
                           <FormControl>
-                            <Input placeholder="Enter first name" {...field} />
+                            <Input placeholder="Enter teacher name" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -170,7 +197,7 @@ export default function AddTeacher() {
                     />
                     <FormField
                       control={form.control}
-                      name="cnicNumber"
+                      name="cnic"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>CNIC Number</FormLabel>
@@ -183,7 +210,7 @@ export default function AddTeacher() {
                     />
                     <FormField
                       control={form.control}
-                      name="dateOfBirth"
+                      name="dob"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Date of Birth</FormLabel>
@@ -196,7 +223,7 @@ export default function AddTeacher() {
                     />
                     <FormField
                       control={form.control}
-                      name="teacherId"
+                      name="teacher_reg_id"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Teacher ID</FormLabel>
@@ -211,12 +238,12 @@ export default function AddTeacher() {
                   <div className="space-y-6">
                     <FormField
                       control={form.control}
-                      name="lastName"
+                      name="username"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Last Name</FormLabel>
+                          <FormLabel>Username</FormLabel>
                           <FormControl>
-                            <Input placeholder="Enter last name" {...field} />
+                            <Input placeholder="Enter username for teacher" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -249,7 +276,7 @@ export default function AddTeacher() {
                     />
                     <FormField
                       control={form.control}
-                      name="maritalStatus"
+                      name="maritial_status"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Marital Status</FormLabel>
@@ -329,33 +356,6 @@ export default function AddTeacher() {
                   </div>
                 </div>
 
-                <div className="md:col-span-2">
-                  <FormField
-                    control={form.control}
-                    name="teacherStatus"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Teacher Status</FormLabel>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                        >
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select teacher status" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <SelectItem value="active">Active</SelectItem>
-                            <SelectItem value="inactive">Inactive</SelectItem>
-                            <SelectItem value="onLeave">On Leave</SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
               </div>
             </CardContent>
           </Card>
@@ -367,7 +367,7 @@ export default function AddTeacher() {
               <div className="grid md:grid-cols-2 gap-6">
                 <FormField
                   control={form.control}
-                  name="homeAddress"
+                  name="address"
                   render={({ field }) => (
                     <FormItem className="md:col-span-2">
                       <FormLabel>Home Address</FormLabel>
@@ -393,7 +393,7 @@ export default function AddTeacher() {
                 />
                 <FormField
                   control={form.control}
-                  name="stateProvince"
+                  name="province"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>State/Province</FormLabel>
@@ -406,7 +406,7 @@ export default function AddTeacher() {
                 />
                 <FormField
                   control={form.control}
-                  name="postalCode"
+                  name="postal_code"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Postal Code</FormLabel>
@@ -432,7 +432,7 @@ export default function AddTeacher() {
                 />
                 <FormField
                   control={form.control}
-                  name="homePhone"
+                  name="home_phone"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Home Phone Number</FormLabel>
@@ -445,7 +445,7 @@ export default function AddTeacher() {
                 />
                 <FormField
                   control={form.control}
-                  name="mobilePhone"
+                  name="phone"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Mobile Phone Number</FormLabel>
@@ -475,13 +475,47 @@ export default function AddTeacher() {
                 />
                 <FormField
                   control={form.control}
-                  name="emergencyContact"
+                  name="emergency_phone"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Emergency Contact Number</FormLabel>
                       <FormControl>
                         <Input
                           placeholder="Enter emergency contact"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Password</FormLabel>
+                      <FormControl>
+                        <Input
+                        type='password'
+                          placeholder="Enter teacher account password"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="password_confirmation"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Password Confirmation</FormLabel>
+                      <FormControl>
+                        <Input
+                        type='password'
+                          placeholder="Confirm Password"
                           {...field}
                         />
                       </FormControl>
@@ -502,7 +536,7 @@ export default function AddTeacher() {
               <div className="grid md:grid-cols-2 gap-6">
                 <FormField
                   control={form.control}
-                  name="degreeProgram"
+                  name="degree"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Degree Program</FormLabel>
@@ -531,7 +565,7 @@ export default function AddTeacher() {
                 />
                 <FormField
                   control={form.control}
-                  name="previousEmployment"
+                  name="prev_employee_detail"
                   render={({ field }) => (
                     <FormItem className="md:col-span-2">
                       <FormLabel>Previous Employment Details</FormLabel>
@@ -555,10 +589,23 @@ export default function AddTeacher() {
               <h2 className="text-lg font-semibold mb-6">
                 Bank Account Information
               </h2>
-              <div className="grid md:grid-cols-2 gap-6">
+              <div className="grid md:grid-cols-3 gap-6">
                 <FormField
                   control={form.control}
-                  name="accountName"
+                  name="bank_name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Bank Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Enter bank name" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="account_name"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Account Name</FormLabel>
@@ -571,7 +618,7 @@ export default function AddTeacher() {
                 />
                 <FormField
                   control={form.control}
-                  name="accountNumber"
+                  name="account_number"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Account Number</FormLabel>
@@ -592,7 +639,7 @@ export default function AddTeacher() {
               <h2 className="text-lg font-semibold mb-6">Role in System</h2>
               <FormField
                 control={form.control}
-                name="roleInSystem"
+                name="role"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Select Role</FormLabel>

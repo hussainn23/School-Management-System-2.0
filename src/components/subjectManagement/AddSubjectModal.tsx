@@ -9,9 +9,9 @@ interface AddSubjectModalProps {
   doSomething: () => void;
 }
 
-const AddSubjectModal: React.FC<AddSubjectModalProps> = ({ isOpen, closeModal, doSomething }) => {
+const AddSubjectModal: React.FC<AddSubjectModalProps> = ({ isOpen, closeModal }) => {
   return (
-    <Modal title="Add Subject" isOpen={isOpen} closeModal={closeModal} doSomething={doSomething} >
+    <Modal title="Add Subject" isOpen={isOpen} closeModal={closeModal} >
       <form className="flex flex-col gap-4">
         
         <div className="flex flex-col md:flex-row md:gap-4">
@@ -70,12 +70,12 @@ const AddSubjectModal: React.FC<AddSubjectModalProps> = ({ isOpen, closeModal, d
         <div className="flex flex-col md:flex-row md:gap-4">
           <div className="flex flex-col gap-1 flex-1">
             <label htmlFor="startingTime" className="text-sm">Starting Time</label>
-            <Input className="w-full block" type="date" name="startingTime" placeholder="Select" />
+            <Input className="w-full block" type="time" name="startingTime" placeholder="Select" />
           </div>
 
           <div className="flex flex-col gap-1 flex-1">
             <label htmlFor="endingTime" className="text-sm">Ending Time</label>
-            <Input className="w-full block" type="date" name="endingTime" placeholder="Select" />
+            <Input className="w-full block" type="time" name="endingTime" placeholder="Select" />
           </div>
         </div>
 
