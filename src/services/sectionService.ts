@@ -1,4 +1,4 @@
-import { axiosInstance } from './classService';
+import { axiosInstance } from './instance';
 
 interface SectionData {
   id: string;

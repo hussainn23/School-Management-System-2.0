@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {
   LayoutDashboard,
-  Users,
   School2,
   BookOpen,
   Building2,

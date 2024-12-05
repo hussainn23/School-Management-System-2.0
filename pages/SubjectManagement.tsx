@@ -1,135 +1,281 @@
-import React, { useState } from 'react';
-import { Button } from '../src/components/ui/button';
-import { MoreHorizontal, Plus, Printer } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import {
-  DropdownMenu,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-} from '../src/components/ui/dropdown-menu';
-// import Table from '../src/components/common/Table';
-import AddSubjectModal from '../src/components/subjectManagement/AddSubjectModal';
-import EditSubjectModal from '../src/components/subjectManagement/EditSubjectModal';
-import TimeTableModal from '../src/components/subjectManagement/TimeTableModal';
+  Download,
+  PlusCircle,
+  Trash2,
+  ChevronLeft,
+  ChevronRight,
+  PencilLine,
+} from 'lucide-react';
+import { useState } from 'react';
+import SubjectFormModal from '@/components/subjectManagement/SubjectFormModal';
+import DeleteConfirmation from '@/components/common/DeleteConfirmation';
+import { PageHeader } from '@/components/common/PageHeader';
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
+import { TableHeader as TableTopHeader } from '@/components/common/TableHeader';
+import { fetchSubjects, deleteSubject } from '@/services/subjectService';
+import { fetchClasses } from '@/services/classService';
+import { fetchSections } from '@/services/sectionService';
+import { fetchTeachers } from '@/services/teacherService';
+import { useQuery, useQueryClient, useMutation } from 'react-query';
+import { Skeleton } from '@/components/ui/skeleton';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+} from '@/components/ui/table';
+import { toast } from 'sonner';
 
-const SubjectManagement: React.FC = () => {
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isTimeTableModalOpen, setIsTimeTableModalOpen] = useState(false);
-  const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
+interface SubjectData {
+  id: string;
+  name: string;
+  class_id: string;
+  section_id: string;
+  teacher_id: string;
+  period_num: string;
+  starting_time: string;
+  ending_time: string;
+  created_at: string;
+}
 
-  const data = [
-    { period: '7', subjectname: 'Physics', teacher: 'Ali', time: '--' },
-    { period: '8', subjectname: 'Chemistry', teacher: 'Nouman', time: '--' },
-  ];
+const SubjectManagement = () => {
+  const queryClient = useQueryClient();
+  const {
+    data: subjects,
+    isLoading,
+    isError,
+    error,
+  } = useQuery(['subjects'], fetchSubjects);
+  const { data: classes } = useQuery(['classes'], fetchClasses);
+  const { data: sections } = useQuery(['sections'], fetchSections);
+  const { data: teachers } = useQuery(['teachers'], fetchTeachers);
 
-  const columns = [
-    { key: 'period', header: 'Period#' },
-    { key: 'subjectname', header: 'Subject Name', sortable: true },
-    { key: 'teacher', header: 'Teacher', sortable: true },
-    { key: 'time', header: 'Time', sortable: true },
-    {
-      key: 'actions',
-      header: '',
-      render: (item: any) => (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem
-              onClick={() => {
-                setSelectedSubject(item.subjectname);
-                setIsEditModalOpen(true);
-              }}
-            >
-              Edit
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => {
-                setSelectedSubject(item.subjectname);
-                setIsTimeTableModalOpen(true);
-              }}
-            >
-              Time Table
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      ),
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeleteModal, setIsDeleteModal] = useState(false);
+  const [subjectToDelete, setSubjectToDelete] = useState<string | null>(null);
+  const [subjectToEdit, setSubjectToEdit] = useState<SubjectData | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const deleteMutation = useMutation(deleteSubject, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['subjects']);
+      toast.success('Subject deleted successfully');
     },
-  ];
+    onError: (error) => {
+      toast.error(`Error deleting subject: ${error}`);
+    },
+  });
+
+  const openModal = (subjectData?: SubjectData) => {
+    setSubjectToEdit(subjectData || null);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSubjectToEdit(null);
+  };
+
+  const openDeleteModal = (id: string) => {
+    setSubjectToDelete(id);
+    setIsDeleteModal(true);
+  };
+
+  const closeDeleteModal = () => {
+    setIsDeleteModal(false);
+    setSubjectToDelete(null);
+  };
+
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+  };
+
+  const handleDelete = async (id: string) => {
+    openDeleteModal(id);
+  };
+
+  const confirmDelete = async () => {
+    if (subjectToDelete) {
+      deleteMutation.mutate(subjectToDelete);
+      closeDeleteModal();
+    }
+  };
+
+  const filteredData = subjects?.filter((subject: SubjectData) =>
+    subject.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  if (isLoading) {
+    return (
+      <div className="p-4 sm:p-6">
+        <PageHeader
+          title="Subject Management"
+          rightButtons={
+            <div className="flex justify-center items-center gap-2">
+              <Button variant="outline">
+                <Download className="mr-2 h-4 w-4" />
+                Export & Print
+              </Button>
+              <Button onClick={() => openModal()}>
+                <PlusCircle className="mr-2 h-4 w-4" />
+                Add Subject
+              </Button>
+            </div>
+          }
+          leftContent={
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>Dashboard</BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>Subject Management</BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          }
+        />
+
+        <div className="w-full bg-white dark:bg-gray-800 shadow-sm p-3 rounded-md max-h-svh">
+          <TableTopHeader
+            title="All Subjects"
+            onSearch={handleSearch}
+            onSort={() => {}}
+          />
+          <Skeleton className="h-8 mb-2" />
+          <Skeleton className="h-6 mb-4" />
+          <Skeleton className="h-6 mb-4" />
+        </div>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div>
+        Error: {error instanceof Error ? error.message : 'Unknown error'}
+      </div>
+    );
+  }
+
+  const formatTime = (time: string): string => {
+    const [hours, minutes] = time.split(':').map(Number);
+    const period = hours >= 12 ? 'PM' : 'AM';
+    const formattedHours = hours % 12 || 12;
+    return `${formattedHours}:${minutes.toString().padStart(2, '0')} ${period}`;
+  };
 
   return (
     <div className="p-4 sm:p-6">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 items-center mb-3">
-        <h2 className="font-semibold text-xl sm:text-2xl mb-3">
-          Subject Management
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-          <Select>
-            <SelectTrigger>
-              <SelectValue placeholder="Select Class" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="A">A</SelectItem>
-              <SelectItem value="B">B</SelectItem>
-              <SelectItem value="C">C</SelectItem>
-            </SelectContent>
-          </Select>
-          <Select>
-            <SelectTrigger>
-              <SelectValue placeholder="Select Section" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="A">A</SelectItem>
-              <SelectItem value="B">B</SelectItem>
-              <SelectItem value="C">C</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+      <PageHeader
+        title="Subject Management"
+        rightButtons={
+          <div className="flex justify-center items-center gap-2">
+            <Button variant="outline">
+              <Download className="mr-2 h-4 w-4" />
+              Export & Print
+            </Button>
+            <Button onClick={() => openModal()} variant={'theme'}>
+              <PlusCircle className="mr-2 h-4 w-4" />
+              Add Subject
+            </Button>
+          </div>
+        }
+        leftContent={
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>Admin</BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>Subject Management</BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        }
+      />
 
-        {/* Button Section */}
-        <div className="flex justify-center sm:justify-end items-center gap-2">
-          <Button onClick={() => setIsAddModalOpen(true)}>
-            <Plus />
-            Add Subject
-          </Button>
-          <Button>
-            <Printer />
-            Print
-          </Button>
+      <SubjectFormModal
+        isOpen={isModalOpen}
+        closeModal={closeModal}
+        subjectData={subjectToEdit}
+        classes={classes || []}
+        sections={sections || []}
+        teachers={teachers || []}
+      />
+
+      <DeleteConfirmation
+        isModalOpen={isDeleteModal}
+        closeModal={closeDeleteModal}
+        doSomething={confirmDelete}
+      />
+
+      <div className="w-full bg-white dark:bg-gray-800 shadow-sm p-3 rounded-md max-h-svh">
+        <TableTopHeader
+          title="All Subjects"
+          onSearch={handleSearch}
+          onSort={() => {}}
+        />
+        <div className="w-full">
+          <Table>
+            <TableRow>
+              <TableHead className="w-12">
+                <input type="checkbox" name="all" id="" />
+              </TableHead>
+              <TableHead>Subject Name</TableHead>
+              <TableHead>Period Number</TableHead>
+              <TableHead>Starting Time</TableHead>
+              <TableHead>Ending Time</TableHead>
+              <TableHead>Actions</TableHead>
+            </TableRow>
+            <TableBody>
+              {filteredData?.map((subject: SubjectData) => (
+                <TableRow key={subject.id}>
+                  <TableCell>
+                    <input type="checkbox" />
+                  </TableCell>
+                  <TableCell>{subject.name}</TableCell>
+                  <TableCell>{subject.period_num}</TableCell>
+                  <TableCell>{formatTime(subject.starting_time)}</TableCell>
+                  <TableCell>{formatTime(subject.ending_time)}</TableCell>
+                  <TableCell className="flex justify-start items-center gap-2">
+                    <Button
+                      size={'sm'}
+                      className="bg-theme/10 text-theme hover:bg-theme/30 dark:bg-theme/30 dark:text-white"
+                      onClick={() => openModal(subject)}
+                    >
+                      <PencilLine size={30} />
+                    </Button>
+                    <Button
+                      size={'sm'}
+                      className="bg-red-200 text-red-600 hover:bg-red-300 dark:bg-red-400 dark:text-red-700"
+                      onClick={() => handleDelete(subject.id)}
+                    >
+                      <Trash2 />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+
+          <div className="flex items-center justify-between px-2 py-4">
+            <p className="text-sm text-muted-foreground">
+              Showing {filteredData?.length ?? 0} of {filteredData?.length ?? 0}{' '}
+              entries
+            </p>
+            <div className="flex items-center space-x-2">
+              <Button variant="outline" size="sm" disabled>
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+              <Button variant="outline" size="sm" disabled>
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
         </div>
       </div>
-      {/* Render the Table */}
-      {/* <Table data={data} columns={columns} itemsPerPage={20} /> */}
-      {/* Add Subject Modal */}
-      <AddSubjectModal
-        isOpen={isAddModalOpen}
-        closeModal={() => setIsAddModalOpen(false)}
-        doSomething={() => console.log('Add Subject Action')}
-      />
-      {/* Edit Subject Modal */}
-      <EditSubjectModal
-        isOpen={isEditModalOpen}
-        closeModal={() => setIsEditModalOpen(false)}
-        doSomething={() => console.log('Edit Subject Action')}
-        subjectName={selectedSubject || ''}
-      />
-      {/* Time Table Modal */}
-      <TimeTableModal
-        isOpen={isTimeTableModalOpen}
-        closeModal={() => setIsTimeTableModalOpen(false)}
-        subjectName={selectedSubject || ''}
-      />
     </div>
   );
 };

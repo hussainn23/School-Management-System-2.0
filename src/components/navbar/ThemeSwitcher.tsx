@@ -28,21 +28,21 @@ export function ModeToggle() {
           <Button
             variant="ghost"
             onClick={() => setTheme('light')}
-            className="justify-start"
+            className="justify-start dark:hover:bg-gray-700"
           >
             Light
           </Button>
           <Button
             variant="ghost"
             onClick={() => setTheme('dark')}
-            className="justify-start"
+            className="justify-start dark:hover:bg-gray-700"
           >
             Dark
           </Button>
           <Button
             variant="ghost"
             onClick={() => setTheme('system')}
-            className="justify-start"
+            className="justify-start dark:hover:bg-gray-700"
           >
             System
           </Button>

@@ -10,7 +10,7 @@ interface TimeTableModalProps {
 
 const TimeTableModal: React.FC<TimeTableModalProps> = ({ isOpen, closeModal }) => {
   return (
-    <Modal title="Time Table" isOpen={isOpen} closeModal={closeModal} doSomething={() => console.log('Time Table action')}>
+    <Modal title="Time Table" isOpen={isOpen} closeModal={closeModal}>
         <form className="flex flex-col gap-4">
       
         <div className="flex flex-col gap-1">

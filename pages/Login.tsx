@@ -6,10 +6,11 @@ import { Eye, EyeOff } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
+import { useAuthStore } from '@/store/authStore';
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
-
+  const {isAuthenticated} = useAuthStore()
   const { login, isLoading, error } = useAuth();
   const navigate = useNavigate();
 
@@ -31,7 +32,10 @@ export default function Login() {
     error && 
         toast.error(error?.message || "An unknown error occured")
 
-  };
+        
+        
+    };
+    isAuthenticated && navigate('/')
 
   return (
     <div className="flex min-h-screen justify-center items-center bg-[url('/loginBackground.svg')] bg-cover bg-center">

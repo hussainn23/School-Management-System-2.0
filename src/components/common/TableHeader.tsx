@@ -10,7 +10,7 @@ import {
 import { Button } from '../ui/button';
 
 interface TableHeaderProps {
-  title: string
+  title?: string
   onSearch: (query: string) => void
   onSort: () => void
   rightContent?: ReactNode

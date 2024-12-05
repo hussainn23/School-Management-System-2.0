@@ -1,69 +1,61 @@
 import React from 'react';
-import { Doughnut } from 'react-chartjs-2';
-import {
-  Chart as ChartJS,
-  ArcElement,
-  Tooltip,
-  Legend,
-  ChartOptions,
-} from 'chart.js';
-
-ChartJS.register(ArcElement, Tooltip, Legend);
+import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 
 type DoughnutChartProps = {
-  data: {
-    labels: string[];
-    datasets: {
-      data: number[];
-      backgroundColor: string[];
-      borderColor?: string[];
-      borderWidth?: number;
-      hoverBackgroundColor?: string[];
-    }[];
-  };
-  options?: ChartOptions<'doughnut'>;
-  width?: string | number;
-  height?: string | number;
-  backgroundColor?: string;
-  total?: number;
-  centerText?: string;
+	data: Array<{ name: string; value: number; color: string }>;
+	width?: string | number;
+	height?: string | number;
+	total?: number | string;
+	centerText?: string;
 };
 
 const DoughnutChart: React.FC<DoughnutChartProps> = ({
-  total,
-  centerText,
-  data,
-  options,
-  width = '50%',
-  height = '400px',
+	data,
+	width = '50%',
+	height = 400,
+	total,
+	centerText,
 }) => {
-  return (
-    <div
-      style={{
-        width,
-        height,
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: '1rem',
-        borderRadius: '8px',
-        marginLeft: 'auto',
-        marginRight: 'auto'
-      }}
-    >
-      <Doughnut data={data} options={options} />
+	const validData = Array.isArray(data) && data.length > 0;
 
-      <div
-        style={{
-          position: 'absolute',
-          textAlign: 'center',
-        }}
-      >
-        <p>{centerText}</p>
-        <p className='text-2xl'>{total}</p>
-      </div>
-    </div>
-  );
+	return (
+		<div style={{ width, height, position: 'relative' }}>
+			<ResponsiveContainer width="100%" height="100%">
+				<PieChart>
+					{validData && (
+						<Pie
+							data={data}
+							cx="50%"
+							cy="50%"
+							innerRadius={60}
+							outerRadius={80}
+							paddingAngle={5}
+							dataKey="value"
+						>
+							{data.map((entry, index) => (
+								<Cell
+									key={`cell-${index}`}
+									fill={entry.color}
+								/>
+							))}
+						</Pie>
+					)}
+				</PieChart>
+			</ResponsiveContainer>
+			<div
+				style={{
+					position: 'absolute',
+					top: '50%',
+					left: '50%',
+					transform: 'translate(-50%, -50%)',
+					textAlign: 'center',
+				}}
+			>
+				<p>{centerText}</p>
+				<p className="text-2xl">{total}</p>
+			</div>
+		</div>
+	);
 };
 
 export default DoughnutChart;

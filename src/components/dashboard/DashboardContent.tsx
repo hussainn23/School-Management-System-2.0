@@ -1,6 +1,5 @@
 import { Calendar } from 'lucide-react';
 import { Button } from '../ui/button';
-
 import { ExamsPercentage } from './ExamPercentage';
 import { HeaderCards } from './HeaderCards';
 import { Attendance } from './Attendance';

@@ -1,4 +1,4 @@
-import { axiosInstance } from './classService';
+import { axiosInstance } from './instance';
 
 
 export const fetchTeachers = async () => {

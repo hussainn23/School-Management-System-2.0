@@ -1,146 +1,334 @@
+import { Button } from '@/components/ui/button';
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '../src/components/ui/select';
-import { Button } from '../src/components/ui/button';
-import { Plus, Printer } from 'lucide-react';
-// import Table from '../src/components/common/Table';
-import { Input } from '../src/components/ui/input';
+  Download,
+  PlusCircle,
+  Trash2,
+  ChevronLeft,
+  ChevronRight,
+  PencilLine,
+  User2,
+  CircleGauge,
+  CircleCheckBig,
+  SquareX,
+} from 'lucide-react';
+import { useState } from 'react';
+import ClassFormModal from '@/components/class-management/ClassFormModal';
+import DeleteConfirmation from '@/components/common/DeleteConfirmation';
+import { PageHeader } from '@/components/common/PageHeader';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
+import { TableHeader as TableTopHeader } from '@/components/common/TableHeader';
+import { fetchClasses, deleteClass } from '@/services/classService';
+import { useQuery, useQueryClient, useMutation } from 'react-query';
+import { Skeleton } from '@/components/ui/skeleton';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+} from '@/components/ui/table';
+import { toast } from 'sonner';
 
-function Attendance() {
-//   const data = [
-//     {
-//       sr: '1',
-//       class: '9th',
-//       section: 'A',
-//       totoalStudents: '100',
-//       leave: '2',
-//       present: '95',
-//       absent: '3',
-//       classTeacher: 'Ali',
-//       status: '--',
-//     },
-//     {
-//       sr: '2',
-//       class: '9th',
-//       section: 'B',
-//       totoalStudents: '110',
-//       leave: '5',
-//       present: '100',
-//       absent: '5',
-//       classTeacher: 'Noumans',
-//       status: '--',
-//     },
-//   ];
+interface ClassData {
+  id: string;
+  name: string;
+  description: string;
+  status: string;
+  created_at: string;
+}
 
-//   const columns = [
-//     { key: 'sr', header: 'SR #' },
-//     { key: 'class', header: 'Class', sortable: true },
-//     { key: 'section', header: 'Section', sortable: true },
-//     { key: 'totoalStudents', header: 'Total Students', sortable: true },
-//     {
-//       key: 'leave',
-//       header: 'Leave',
-//       sortable: true,
-//       render: (item: any) => (
-//         <span className="text-orange-400  font-semibold">{item.leave}</span>
-//       ),
-//     },
-//     {
-//       key: 'present',
-//       header: 'Present',
-//       sortable: true,
-//       render: (item: any) => (
-//         <span className="text-green-500 font-semibold">{item.present}</span>
-//       ),
-//     },
-//     {
-//       key: 'absent',
-//       header: 'Absent',
-//       sortable: true,
-//       render: (item: any) => (
-//         <span className="text-red-500 font-semibold">{item.absent}</span>
-//       ),
-//     },
-//     { key: 'classTeacher', header: 'Class Teacher', sortable: true },
-//     { key: 'status', header: 'Status', sortable: true },
-//   ];
+const Attendance = () => {
+  const queryClient = useQueryClient();
+  const { data, isLoading, isError, error } = useQuery<ClassData[], Error>(
+    ['classes'],
+    fetchClasses
+  );
+  const [allSelected, setAllSelected] = useState(false);
+  const [selectedClasses, setSelectedClasses] = useState<string[]>([]);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeleteModal, setIsDeleteModal] = useState(false);
+  const [classToDelete, setClassToDelete] = useState<string | null>(null);
+  const [classToEdit, setClassToEdit] = useState<ClassData | null>(null);
+
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const deleteMutation = useMutation(deleteClass, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['classes']);
+      toast.success('Class deleted successfully');
+    },
+    onError: (error) => {
+      toast.error(`Error deleting class: ${error}`);
+    },
+  });
+
+  const openModal = (classData?: ClassData) => {
+    setClassToEdit(classData || null);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setClassToEdit(null);
+  };
+
+  const openDeleteModal = (id: string) => {
+    setClassToDelete(id);
+    setIsDeleteModal(true);
+  };
+
+  const closeDeleteModal = () => {
+    setIsDeleteModal(false);
+    setClassToDelete(null);
+  };
+
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+  };
+
+  const handleDelete = async (id: string) => {
+    openDeleteModal(id);
+  };
+
+  const confirmDelete = async () => {
+    if (classToDelete) {
+      deleteMutation.mutate(classToDelete);
+      closeDeleteModal();
+    }
+  };
+
+  const filteredData = data?.filter((row) =>
+    row.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const handleSelectAll = () => {
+    if (allSelected) {
+      setSelectedClasses([]);
+    } else {
+      setSelectedClasses(data?.map((row) => row.id) || []);
+    }
+    setAllSelected(!allSelected);
+  };
+
+  const handleSelectSingle = (id: string) => {
+    if (selectedClasses.includes(id)) {
+      setSelectedClasses(selectedClasses.filter((item) => item !== id));
+    } else {
+      setSelectedClasses([...selectedClasses, id]);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="p-4 sm:p-6">
+        <PageHeader
+          title="Attendance"
+          rightButtons={
+            <div className="flex justify-center items-center gap-2">
+              <Button variant="outline">
+                <Download className="mr-2 h-4 w-4" />
+                Export & Print
+              </Button>
+              <Button onClick={() => openModal()}>
+                <PlusCircle className="mr-2 h-4 w-4" />
+                Download
+              </Button>
+            </div>
+          }
+          leftContent={
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>Dashboard</BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>Attendance</BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          }
+        />
+
+        <div className="w-full grid md:grid-cols-4 grid-cols-2 gap-5">
+          <Skeleton className="h-10 mb-2" />
+          <Skeleton className="h-10 mb-2" />
+          <Skeleton className="h-10 mb-2" />
+          <Skeleton className="h-10 mb-2" />
+        </div>
+
+        <div className="w-full bg-white dark:bg-gray-800 shadow-sm p-3 rounded-md max-h-svh">
+          <TableTopHeader title="" onSearch={handleSearch} onSort={() => {}} />
+          <Skeleton className="h-8 mb-2" />
+          <Skeleton className="h-6 mb-4" />
+          <Skeleton className="h-6 mb-4" />
+        </div>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div>
+        Error: {error instanceof Error ? error.message : 'Unknown error'}
+      </div>
+    );
+  }
 
   return (
-    <>
-      <div className="p-4 sm:p-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 items-center mb-3">
-          <h2 className="font-semibold text-xl sm:text-2xl mb-3">Attendance</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Select>
-              <SelectTrigger>
-                <SelectValue placeholder="Select Class" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="A">A</SelectItem>
-                <SelectItem value="B">B</SelectItem>
-                <SelectItem value="C">C</SelectItem>
-              </SelectContent>
-            </Select>
-            <div className="flex flex-col gap-1 w-full">
-              <Input
-                className="w-full block"
-                type="date"
-                name="startingTime"
-                placeholder="Select"
-              />
-            </div>
-          </div>
-        </div>
-
-        {/*  */}
-
-        <div className="bg-white py-4 grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-          {/* First Column */}
-          <div className="flex gap-4 px-5">
-            <p className="font-bold">All Classes</p>
-            <div className="flex gap-6 items-center">
-              <div className="flex ml-2">
-                <span className="text-xs text-orange-600 font-bold">TOTAL</span>
-                <span className="text-xs ml-2 font-bold">42</span>
-              </div>
-              <div className="flex ml-2">
-                <span className="text-xs font-bold text-yellow-400">LEAVE</span>
-                <span className="text-xs ml-2 font-bold">10</span>
-              </div>
-              <div className="flex ml-2">
-                <span className="text-xs font-bold text-green-400">
-                  PRESENT
-                </span>
-                <span className="text-xs ml-2 font-bold">20</span>
-              </div>
-              <div className="flex ml-2">
-                <span className="text-xs font-bold text-red-600">ABSENT</span>
-                <span className="text-xs ml-2 font-bold">12</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Second Column (Buttons) */}
-          <div className="flex items-center gap-2 justify-end">
-            <Button>
-              <Plus />
-              Add Subject
+    <div className="p-4 sm:p-6">
+      <PageHeader
+        title="Attendance"
+        rightButtons={
+          <div className="flex justify-center items-center gap-2">
+            <Button variant="outline">
+              <Download className="mr-2 h-4 w-4" />
+              Export & Print
             </Button>
-            <Button>
-              <Printer />
-              Print
+            <Button onClick={() => openModal()} variant={'theme'}>
+              <PlusCircle className="mr-2 h-4 w-4" />
+              Download
             </Button>
           </div>
-        </div>
+        }
+        leftContent={
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>Admin</BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>Attendance</BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        }
+      />
 
-        {/* <Table data={data} columns={columns} itemsPerPage={20} /> */}
+      <ClassFormModal
+        closeModal={closeModal}
+        isModalOpen={isModalOpen}
+        classData={classToEdit}
+      />
+
+      <DeleteConfirmation
+        isModalOpen={isDeleteModal}
+        closeModal={closeDeleteModal}
+        doSomething={confirmDelete}
+      />
+
+        {/* // TOP CARDS  */}
+      <div className="w-full grid md:grid-cols-4 grid-cols-2 gap-10 mb-4">
+        <div className='bg-white px-5 py-3 dark:bg-gray-700 flex items-center gap-6 shadow-sm rounded-sm'>
+            <span className='bg-indigo-600 p-3 rounded-sm text-white'>
+                <User2 />
+            </span>
+            <div className='flex flex-col gap-1'>
+                <span className='text-sm font-medium'>Total Students</span>
+                <h5 className='font-medium text-2xl'>1291</h5>
+            </div>
+        </div>
+        <div className='bg-white px-5 py-3 dark:bg-gray-700 flex items-center gap-6 shadow-sm rounded-sm'>
+            <span className='bg-orange-600 p-3 rounded-sm text-white'>
+                <CircleGauge />
+            </span>
+            <div className='flex flex-col gap-1'>
+                <span className='text-sm font-medium'>Leave</span>
+                <h5 className='font-medium text-2xl'>1291</h5>
+            </div>
+        </div>
+        <div className='bg-white px-5 py-3 dark:bg-gray-700 flex items-center gap-6 shadow-sm rounded-sm'>
+            <span className='bg-green-600 p-3 rounded-sm text-white'>
+                <CircleCheckBig />
+            </span>
+            <div className='flex flex-col gap-1'>
+                <span className='text-sm font-medium'>Present</span>
+                <h5 className='font-medium text-2xl'>1291</h5>
+            </div>
+        </div>
+        <div className='bg-white px-5 py-3 dark:bg-gray-700 flex items-center gap-6 shadow-sm rounded-sm'>
+            <span className='bg-red-600 p-3 rounded-sm text-white'>
+                <SquareX />
+            </span>
+            <div className='flex flex-col gap-1'>
+                <span className='text-sm font-medium'>Absent</span>
+                <h5 className='font-medium text-2xl'>1291</h5>
+            </div>
+        </div>
       </div>
-    </>
+
+      <div className="w-full bg-white dark:bg-gray-800 shadow-sm p-3 rounded-md max-h-svh">
+        <TableTopHeader title="" onSearch={handleSearch} onSort={() => {}} />
+        <div className="w-full">
+          <Table>
+            <TableRow>
+              <TableHead className="w-12">
+                <input
+                  type="checkbox"
+                  checked={allSelected}
+                  onChange={handleSelectAll}
+                />
+              </TableHead>
+              <TableHead>Class Name</TableHead>
+              <TableHead>Description</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Created At</TableHead>
+              <TableHead>Actions</TableHead>
+            </TableRow>
+            <TableBody>
+              {filteredData?.map((row) => (
+                <TableRow key={row.id}>
+                  <TableCell>
+                    <input
+                      type="checkbox"
+                      checked={selectedClasses.includes(row.id)}
+                      onChange={() => handleSelectSingle(row.id)}
+                    />
+                  </TableCell>
+                  <TableCell>{row.name}</TableCell>
+                  <TableCell>{row.description}</TableCell>
+                  <TableCell>{row.status}</TableCell>
+                  <TableCell>
+                    {new Date(row.created_at).toISOString().split('T')[0]}
+                  </TableCell>
+                  <TableCell className="flex justify-start items-center gap-2">
+                    <Button
+                      size={'sm'}
+                      className="bg-theme/10 text-theme hover:bg-theme/30 dark:bg-theme/30 dark:text-white"
+                      onClick={() => openModal(row)}
+                    >
+                      <PencilLine size={30} />
+                    </Button>
+                    <Button
+                      size={'sm'}
+                      className="bg-red-200 text-red-600 hover:bg-red-300 dark:bg-red-400 dark:text-red-700"
+                      onClick={() => handleDelete(row.id)}
+                    >
+                      <Trash2 />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+
+          <div className="flex items-center justify-between px-2 py-4">
+            <p className="text-sm text-muted-foreground">
+              Showing {filteredData?.length ?? 0} of {filteredData?.length ?? 0}{' '}
+              entries
+            </p>
+            <div className="flex items-center space-x-2">
+              <Button variant="outline" size="sm" disabled>
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+              <Button variant="outline" size="sm" disabled>
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
-}
+};
 
 export default Attendance;

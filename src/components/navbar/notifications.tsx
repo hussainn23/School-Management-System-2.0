@@ -22,7 +22,7 @@ export const Notifications = () => {
         align="center"
         className="flex flex-col bg-white dark:bg-gray-900 dark:border-gray-700"
       >
-        <div className="flex justify-between items-center w-full">
+        <div className="flex justify-between items-center w-full pb-2 shadow-sm">
           <h3 className="text-gray-700 dark:text-gray-300 font-semibold text-center">
             Notifications
           </h3>
