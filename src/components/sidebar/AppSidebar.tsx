@@ -20,63 +20,92 @@ import {
 import { useTheme } from 'next-themes';
 
 const data = {
-  user: {
-    name: 'John Doe',
-    email: 'john@example.com',
-    avatar: '/avatars/john-doe.jpg',
-  },
-  navMain: [
-    {
-      title: 'Dashboard',
-      url: '/',
-      icon: Home,
-      isActive: true,
-    },
-    {
-      title: 'Admin',
-      url: '/admin',
-      icon: LayoutDashboard,
-      items: [
-        { title: 'Class Management', url: '/admin/class-management' },
-        { title: 'Section Management', url: '/admin/section-management' },
-        { title: 'Teacher Management', url: '/admin/teacher-management' },
-        { title: 'Subject Management', url: '/admin/subject-management' },
-        { title: 'Transport Management', url: '/admin/transport-management' },
-        { title: 'Attendance', url: '/admin/attendance' },
-        { title: 'Student Report', url: '/admin/student-report' },
-      ],
-    },
-    {
-      title: 'Admissions',
-      url: '/admissions',
-      icon: School2,
-    },
-    {
-      title: 'Academics',
-      url: '/academics',
-      icon: BookOpen,
-    },
-    {
-      title: 'Accounts Office',
-      url: '/accounts',
-      icon: Building2,
-    },
-    {
-      title: 'Exams Department',
-      url: '/exams',
-      icon: GraduationCap,
-    },
-    {
-      title: 'Hostel Management',
-      url: '/hostel',
-      icon: Home,
-    },
-    {
-      title: 'Transport Management',
-      url: '/transport',
-      icon: Home,
-    },
-  ],
+	user: {
+		name: 'John Doe',
+		email: 'john@example.com',
+		avatar: '/avatars/john-doe.jpg',
+	},
+	navMain: [
+		{
+			title: 'Dashboard',
+			url: '/',
+			icon: Home,
+			isActive: true,
+		},
+		{
+			title: 'Admin',
+			url: '/admin',
+			icon: LayoutDashboard,
+			items: [
+				{ title: 'Class Management', url: '/admin/class-management' },
+				{
+					title: 'Section Management',
+					url: '/admin/section-management',
+				},
+				{
+					title: 'Teacher Management',
+					url: '/admin/teacher-management',
+				},
+				{
+					title: 'Subject Management',
+					url: '/admin/subject-management',
+				},
+				{ title: 'Attendance', url: '/admin/attendance' },
+				{ title: 'Student Report', url: '/admin/student-report' },
+			],
+		},
+		{
+			title: 'Admissions',
+			url: '/admissions',
+			icon: School2,
+			items: [
+				{ title: 'Enrollment', url: '/admission/enrollment' },
+				{
+					title: 'Pending Students',
+					url: '/admission/pending-students',
+				},
+			],
+		},
+		{
+			title: 'Academics',
+			url: '/academics',
+			icon: BookOpen,
+		},
+		{
+			title: 'Accounts Office',
+			url: '/accounts',
+			icon: Building2,
+		},
+		{
+			title: 'Exams Department',
+			url: '/exams',
+			icon: GraduationCap,
+		},
+		{
+			title: 'Hostel Management',
+			url: '/hostel',
+			icon: Home,
+			items: [
+				{
+					title: 'Pending Students',
+					url: '/hostel-management/pending-students',
+				},
+				{
+					title: 'Students',
+					url: '/hostel-management/students',
+				},
+				{
+					title: 'Rooms',
+					url: '/hostel-management/rooms',
+				},
+			],
+		},
+		{
+			title: 'Transport Management',
+			url: '/transport-management',
+			icon: Home,
+		},
+	],
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
